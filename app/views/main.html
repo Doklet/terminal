@@ -9,7 +9,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="input-group">
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" ng-model="pipe">
         <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
         </span>
@@ -22,7 +22,7 @@
     <br>
   </div>
   <div class="row">
-    <p>Hello</p>
+    {{content}}
   </div>
 </div>
 

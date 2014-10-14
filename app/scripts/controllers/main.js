@@ -7,9 +7,14 @@ angular.module('terminalApp')
     $scope.error = undefined;
 
     $scope.submit = function() {
+      $scope.info = undefined;
+      $scope.error = undefined;
+      $scope.content = undefined;
+
       PipeService.run($scope.pipe)
         .success(function(Response) {
-          $scope.type = Response.headers('Content-Type');
+
+          /*$scope.type = Response.headers('Content-Type');*/
           $scope.content = Response;
         })
         .error(function() {
