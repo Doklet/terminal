@@ -17,9 +17,10 @@ angular.module('terminalApp')
           /*$scope.type = Response.headers('Content-Type');*/
           $scope.content = Response;
         })
-        .error(function() {
+        .error(function(Response) {
           $scope.info = undefined;
           $scope.error = 'Failed to execute command';
+          $scope.content = Response;
         });
     };
 
