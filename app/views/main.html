@@ -10,18 +10,44 @@
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
         </span>
       </div>
-      <!-- /input-group -->
-    </div>
-    <!-- /.col-lg-6 -->
-  </div>
-  <div class="row">
-    <br>
-  </div>
-  <div class="row">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        {{content}}
+      <div class="panel panel-default" ng-show="pipe.length > 0">
+        <div class="panel-body">
+          <table class="table">
+            <tr ng-repeat="s in suggestions | filter:pipe">
+              <td>{{s.name}}</td>
+              <td>{{s.desc}}</td>
+              <td>{{s.example}}</td>
+            </tr>
+
+          </table>
+
+<!--           <ul class="list-unstyled">
+
+            <li ng-repeat="s in suggestions | filter:pipe">
+              <p>
+                {{s.name}}
+                <span class="pull-right">
+                  {{s.desc}} {{s.example}}
+                </span>
+              </p>
+            </li>
+
+          </ul> -->
+        </div>
       </div>
     </div>
+    <!-- /input-group -->
   </div>
+  <!-- /.col-lg-6 -->
+</div>
+<div class="row">
+  <br>
+</div>
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      {{content}}
+    </div>
+  </div>
+</div>
 </div>
