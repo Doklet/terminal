@@ -8,6 +8,15 @@
         <input type="text" class="form-control" ng-model="pipe" placeholder="Enter commands">
         <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Layout
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Tab</a>
+            </li>
+            <li><a href="#">Side By Side</a>
+            </li>
+          </ul>
         </span>
       </div>
       <div class="panel panel-default" ng-show="pipe.length > 0">
@@ -18,21 +27,7 @@
               <td style="border-top: none;">{{s.desc}}</td>
               <td style="border-top: none;">{{s.example}}</td>
             </tr>
-
           </table>
-
-<!--           <ul class="list-unstyled">
-
-            <li ng-repeat="s in suggestions | filter:pipe">
-              <p>
-                {{s.name}}
-                <span class="pull-right">
-                  {{s.desc}} {{s.example}}
-                </span>
-              </p>
-            </li>
-
-          </ul> -->
         </div>
       </div>
     </div>
@@ -45,9 +40,21 @@
 </div>
 <div class="row">
   <div class="panel panel-default">
+    <ul class="nav nav nav-tabs nav-justified" role="tablist">
+      <li role="presentation" class="active"><a>Input</a>
+      </li>
+      <li role="presentation"><a>Output</a>
+      </li>
+    </ul>
     <div class="panel-body">
-      {{content}}
+      <div class="row">
+        <div class="col-md-6">
+          <textarea rows="3" ng-model="input"></textarea>
+        </div>
+        <div class="col-md-6">
+          {{output}}
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </div>

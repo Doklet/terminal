@@ -25,18 +25,18 @@ angular.module('terminalApp')
     $scope.submit = function() {
       $scope.info = undefined;
       $scope.error = undefined;
-      $scope.content = undefined;
+      $scope.output = undefined;
 
-      PipeService.run($scope.pipe)
+      PipeService.run($scope.pipe, $scope.input)
         .success(function(Response) {
 
           /*$scope.type = Response.headers('Content-Type');*/
-          $scope.content = Response;
+          $scope.output = Response;
         })
         .error(function(Response) {
           $scope.info = undefined;
           $scope.error = 'Failed to execute command';
-          $scope.content = Response;
+          $scope.output = Response;
         });
     };
 
