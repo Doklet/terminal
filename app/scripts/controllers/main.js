@@ -6,6 +6,8 @@ angular.module('terminalApp')
     $scope.info = undefined;
     $scope.error = undefined;
 
+    $scope.selectedTab = 'input';
+
     $scope.suggestions = [{
       name: 'split',
       desc: 'Split a file into chunks',
@@ -32,6 +34,7 @@ angular.module('terminalApp')
 
           /*$scope.type = Response.headers('Content-Type');*/
           $scope.output = Response;
+          $scope.selectedTab = 'output';
         })
         .error(function(Response) {
           $scope.info = undefined;
