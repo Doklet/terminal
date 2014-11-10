@@ -43,7 +43,8 @@
     <ul class="nav nav nav-tabs nav-justified" role="tablist">
       <li role="presentation" ng-class="{active: selectedTab=='input'}" ng-click="selectedTab='input'"><a>Input</a>
       </li>
-      <li role="presentation" ng-class="{active: selectedTab=='output'}" ng-click="selectedTab='output'"><a>Output</a>
+      <li role="presentation" ng-class="{active: selectedTab=='output'}" ng-click="selectedTab='output'">
+        <a>Output</a>
       </li>
     </ul>
     <div class="panel-body">
@@ -52,7 +53,11 @@
           {{input}}
         </div>
         <div class="col-md-12" ng-show="selectedTab=='output'">
-          {{output}}
+          <div>
+            {{output}}
+          </div>
+          <div ui-grid="gridOptions" class="myGrid" ui-grid-auto-resize>
+          </div>
         </div>
       </div>
     </div>
