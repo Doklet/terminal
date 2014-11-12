@@ -39,6 +39,9 @@ angular.module('terminalApp')
       desc: 'Copy files'
     }];
 
+    $scope.clearInput = function(){
+      $scope.input = '';
+    };
 
     $scope.submit = function() {
       $scope.info = undefined;

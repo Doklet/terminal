@@ -8,18 +8,9 @@
         <input type="text" class="form-control" ng-model="pipe" placeholder="Enter commands">
         <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Layout
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Tab</a>
-            </li>
-            <li><a href="#">Side By Side</a>
-            </li>
-          </ul>
         </span>
       </div>
-      <div class="panel panel-default" ng-show="pipe.length > 0">
+<!--       <div class="panel panel-default" ng-show="pipe.length > 0">
         <div class="panel-body">
           <table class="table">
             <tr ng-repeat="s in suggestions | filter:pipe">
@@ -29,7 +20,7 @@
             </tr>
           </table>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- /input-group -->
   </div>
@@ -50,11 +41,27 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-md-12" ng-show="selectedTab=='input'">
-          {{input}}
+          <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+              <div class="btn-group pull-right" role="group">
+                <button type="button" class="btn btn-default" ng-click="clearInput()">Clear</button>
+              </div>
+              <h5>{{input.length | bytes}}</h5>
+            </div>
+            <textarea class="form-control myTextArea" rows="50" ng-model="input"></textarea>
+          </div>
         </div>
         <div class="col-md-12" ng-show="selectedTab=='output'">
           <div>
-            {{output}}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <div class="btn-group pull-right" role="group">
+                  <button type="button" class="btn btn-default">Raw</button>
+                </div>
+                <h5>{{output.length | bytes}}</h5>
+              </div>
+              <textarea class="form-control myTextArea" rows="50">{{output}}</textarea>
+            </div>
           </div>
           <div ui-grid="gridOptions" class="myGrid" ui-grid-auto-resize>
           </div>
