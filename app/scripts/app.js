@@ -2,8 +2,6 @@
 
 angular.module('terminalApp', [
     'apiMock',
-    /*  'ui.grid',
-      'ui.grid.autoResize',*/
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -21,7 +19,7 @@ angular.module('terminalApp', [
   })
   .filter('bytes', function() {
     return function(bytes, precision) {
-      if (bytes === '' || isNaN(parseFloat(bytes)) || !isFinite(bytes)) {
+      if (bytes === undefined || bytes === '' || isNaN(parseFloat(bytes)) || !isFinite(bytes)) {
         return '-';
       }
       if (typeof precision === 'undefined') {

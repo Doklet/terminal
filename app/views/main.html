@@ -32,7 +32,8 @@
 <div class="row">
   <div class="panel panel-default">
     <ul class="nav nav nav-tabs nav-justified" role="tablist">
-      <li role="presentation" ng-class="{active: selectedTab=='input'}" ng-click="selectedTab='input'"><a>Input</a>
+      <li role="presentation" ng-class="{active: selectedTab=='input'}" ng-click="selectedTab='input'">
+      <a>Input</a>
       </li>
       <li role="presentation" ng-class="{active: selectedTab=='output'}" ng-click="selectedTab='output'">
         <a>Output</a>
@@ -62,8 +63,6 @@
               </div>
               <textarea class="form-control myTextArea" rows="50">{{output}}</textarea>
             </div>
-          </div>
-          <div ui-grid="gridOptions" class="myGrid" ui-grid-auto-resize>
           </div>
         </div>
       </div>

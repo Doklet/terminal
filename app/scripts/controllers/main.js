@@ -7,11 +7,7 @@ angular.module('terminalApp')
     $scope.error = undefined;
 
     $scope.selectedTab = 'input';
-    $scope.outputFormat = 'grid';
-
-    $scope.gridOptions = {
-      enableColumnResize: true
-    };
+    $scope.outputFormat = 'raw';
 
     $scope.testData = [{
       name: 'Adam',
