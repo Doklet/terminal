@@ -20,6 +20,20 @@ angular.module('terminalApp')
       age: 12
     }];
 
+    $scope.pipes = [{
+      id: '0',
+      userId: '0',
+      name: 'Echo',
+      description: 'Descadassad  sadasdas  s dasdasddsasdsd sadds   sadasdsadasdads sdasdasd sdsddddddddddsdsddsdsdsdsdsdsdssddsdsdsds  sddsdsd ',
+      pipe: 'echo'
+    }, {
+      id: '1',
+      userId: '0',
+      name: 'Git',
+      description: 'Git log to table',
+      pipe: 'split -s commit | tokenize --key=commit --key=Author --key=Date --rest=Msg | trim --start=: -s whitespace -s eol | output -t table --name=git_log -c commit -c author -c date -c msg'
+    }];
+
     $scope.suggestions = [{
       name: 'split',
       desc: 'Split a file into chunks',
@@ -35,7 +49,19 @@ angular.module('terminalApp')
       desc: 'Copy files'
     }];
 
-    $scope.clearInput = function(){
+    $scope.Modes = {
+        CommandLine: 0,
+        SavedPipe: 1
+    };
+
+    $scope.mode=$scope.Modes.CommandLine;
+
+    $scope.pipeSelected = function(selectedPipe) {
+      $scope.pipe = selectedPipe.name;
+      $scope.selectedPipe = selectedPipe.selectedPipe;
+    };
+
+    $scope.clearInput = function() {
       $scope.input = '';
     };
 
@@ -44,7 +70,7 @@ angular.module('terminalApp')
       $scope.error = undefined;
       $scope.output = undefined;
 
-      PipeService.run($scope.pipe, $scope.input)
+      PipeService.run($scope.commands, $scope.input)
         .success(function(response) {
 
           /*$scope.type = response.headers('Content-Type');*/

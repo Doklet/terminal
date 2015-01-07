@@ -2,25 +2,70 @@
 <div class="alert alert-info" ng-show="info!=undefined">{{info}}</div>
 
 <div class="container">
+
   <div class="row">
-    <div class="col-lg-12">
-      <div class="input-group">
-        <input type="text" class="form-control" ng-model="pipe" placeholder="Enter commands">
-        <span class="input-group-btn">
+    <div class="col-md-12">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default active" ng-click="mode=Modes.CommandLine" ng-class="{ 'active' : mode == Modes.CommandLine }">Command Line</button>
+        <button type="button" class="btn btn-default" ng-click="mode=Modes.SavedPipe" ng-class="{ 'active' : mode == Modes.SavedPipe }">Saved Pipe</button>
+      </div>
+      <button type="button" ng-show="mode == Modes.CommandLine" class="btn btn-success pull-right">Save Pipe</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <br>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <!-- Pipe View-->
+      <div ng-show="mode == Modes.SavedPipe">
+        <div class="input-group">
+          <input type="text" class="form-control" ng-model="pipe" placeholder="Enter the name of the pipe">
+          <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
         </span>
-      </div>
-<!--       <div class="panel panel-default" ng-show="pipe.length > 0">
-        <div class="panel-body">
-          <table class="table">
-            <tr ng-repeat="s in suggestions | filter:pipe">
-              <td style="border-top: none;">{{s.name}}</td>
-              <td style="border-top: none;">{{s.desc}}</td>
-              <td style="border-top: none;">{{s.example}}</td>
-            </tr>
-          </table>
         </div>
-      </div> -->
+        <div class="panel panel-default" ng-show="pipe.length > 0">
+          <div class="panel-body">
+            <table class="table table-hover">
+              <tbody>
+                <tr ng-repeat="s in pipes | filter:pipe" ng-click="pipeSelected(s)">
+                  <td style="border-top: none;"><a>{{s.name}}</a>
+                  </td>
+                  <td style="border-top: none;">{{s.description}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Command Line  View -->
+      <div ng-show="mode == Modes.CommandLine">
+        <div class="input-group">
+          <input type="text" class="form-control" ng-model="commands" placeholder="Enter commands">
+          <span class="input-group-btn">
+          <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
+        </span>
+        </div>
+
+        <div class="panel panel-default" ng-show="commands.length > 0">
+          <div class="panel-body">
+            <table class="table">
+              <tr ng-repeat="s in suggestions | filter:commands">
+                <td style="border-top: none;">{{s.name}}</td>
+                <td style="border-top: none;">{{s.desc}}</td>
+                <td style="border-top: none;">{{s.example}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
     </div>
     <!-- /input-group -->
   </div>
@@ -33,7 +78,7 @@
   <div class="panel panel-default">
     <ul class="nav nav nav-tabs nav-justified" role="tablist">
       <li role="presentation" ng-class="{active: selectedTab=='input'}" ng-click="selectedTab='input'">
-      <a>Input</a>
+        <a>Input</a>
       </li>
       <li role="presentation" ng-class="{active: selectedTab=='output'}" ng-click="selectedTab='output'">
         <a>Output</a>
