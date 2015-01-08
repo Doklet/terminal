@@ -76,7 +76,7 @@
 </div>
 <div class="row">
   <div class="panel panel-default">
-    <ul class="nav nav nav-tabs nav-justified" role="tablist">
+    <ul class="nav nav-pills nav-justified" role="tablist">
       <li role="presentation" ng-class="{active: selectedTab=='input'}" ng-click="selectedTab='input'">
         <a>Input</a>
       </li>
@@ -101,10 +101,7 @@
           <div>
             <div class="panel panel-default">
               <div class="panel-heading">
-                <div class="btn-group pull-right" role="group">
-                  <button type="button" class="btn btn-default">Raw</button>
-                </div>
-                <h5>{{output.length | bytes}}</h5>
+                <h5>{{output.length | bytes}} {{executionTime | time }}</h5>
               </div>
               <textarea class="form-control myTextArea" rows="50">{{output}}</textarea>
             </div>

@@ -1,40 +1,51 @@
-hello from file igen
-gffgfg
-
-
-f
-gffgfg
-
-fgfggffgdggggfgf fdggfgdgf  fdgfggfggffdgfgfdfgf  fdggfgdgfggf  fdggfgfgfgffdgfgfgffgg  fdggfgfgfgffdgfgfgffgg fgfggffgdggggfgf fdggfgdgf  fdgfggfggffdgfgfdfgf  fdggfgdgfggf  fdggfgfgfgffdgfgfgffgg  fdggfgfgfgffdgfgfgffgg fgfggffgdggggfgf fdggfgdgf  fdgfggfggffdgfgfdfgf  fdggfgdgfggf  fdggfgfgfgffdgfgfgffgg  fdggfgfgfgffdgfgfgffgg 
-
-
-fdgfggfggffdgfgfdfgf
-
-
-gfdf
-
-
-dfdf
-
-
-
-dfdffd
-
-
-
-dfdffdfd
-
-
-
-dfdffd
-
-dfdf
-
-dfdfdfsfsdf
-
-
-
-dfsdfsdfsdfdsf
-
-
-dfsdfsdfsdfdsf
+[{
+  "commit": "3087df25236eb303a6a50cd38c3b05da380ecb06",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Mon Oct 20 20:36:45 2014 +0200",
+  "msg": "    Package support for default and home paths\n\n"
+}, {
+  "commit": "f3caf7e81179684ad652010fd258cca84a18b73b",
+  "author": "Marcus Nilsson <marcus.nilsson@leogears.com>",
+  "date": "Sat Oct 18 10:20:42 2014 +0200",
+  "msg": "    Fix stage target for bash\n\n"
+}, {
+  "commit": "c5fc49e550edde1627617d108ad3948037081c39",
+  "author": "Marcus Nilsson <marcus.nilsson@leogears.com>",
+  "date": "Fri Oct 17 19:48:39 2014 +0200",
+  "msg": "    Changed ports for dev outside of 1000 for Mac\n\n"
+}, {
+  "commit": "3471a1d4911eff7a67168d511822a61f85b2ef7a",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Thu Oct 16 21:05:24 2014 +0200",
+  "msg": "    Better pipe support\n\n"
+}, {
+  "commit": "a444e0a9c484098d93713ce68fa98a7ceeb0763a",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Tue Oct 14 20:57:17 2014 +0200",
+  "msg": "    Added basic cat command\n\n"
+}, {
+  "commit": "518af58c72c5a813537adc31a6a0b2dc50ebdac1",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Tue Oct 7 21:22:02 2014 +0200",
+  "msg": "    changed production vars\n\n"
+}, {
+  "commit": "4d97100f5dd6820631150a078e3669767d7935ab",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Sat Oct 4 21:46:31 2014 +0200",
+  "msg": "    Fix for auth of account if oauth\n\n"
+}, {
+  "commit": "05545577743898308134c873896be2bcf2eea0cb",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Sat Oct 4 20:50:58 2014 +0200",
+  "msg": "    Added method to webdry is_forbidden_resource\n\n"
+}, {
+  "commit": "71e4d370169b24d07f18c5edba0c02d726eb078a",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Sat Oct 4 20:06:26 2014 +0200",
+  "msg": "    Fix for Account, and prod,dev relese profiles\n\n"
+}, {
+  "commit": "9ea9f6cd567a8c6c2c239ca405b47d55fb44c86c",
+  "author": "Marcus Nilsson <tandy.nilsson@gmail.com>",
+  "date": "Fri Oct 3 20:05:26 2014 +0200",
+  "msg": "    Fix for mime-type json"
+}]

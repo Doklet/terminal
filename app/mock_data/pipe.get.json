@@ -1,0 +1,13 @@
+[{
+  "id": "0",
+  "user_id": "0",
+  "name": "Echo",
+  "description": "Desc",
+  "pipe": "echo"
+}, {
+  "id": "1",
+  "user_id": "0",
+  "name": "Git",
+  "description": "Git log to table",
+  "pipe": "split -s commit | tokenize --key=commit --key=Author --key=Date --rest=Msg | trim --start=: -s whitespace -s eol | output -t table --name=git_log -c commit -c author -c date -c msg"
+}]

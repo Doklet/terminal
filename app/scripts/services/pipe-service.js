@@ -3,9 +3,18 @@
 angular.module('terminalApp')
   .service('PipeService', function PipeService($http) {
 
-    this.run = function(Pipe, Input) {
-      var PipeArg = 'pipe=' + Pipe;
-      return $http.post('/api/pipe/run?' + PipeArg, Input);
+    this.getAllPipes = function() {
+      return $http.get('/api/pipe');
+    };
+
+    this.run = function(pipe, input) {
+      var pipeArg = 'pipe=' + pipe;
+      return $http.post('/api/pipe/run?' + pipeArg, input);
+    };
+
+    this.runPipeWithId = function(pipeId, input) {
+      var PipeArg = 'id=' + pipeId;
+      return $http.post('/api/pipe/run?' + PipeArg, input);
     };
 
   });

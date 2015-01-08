@@ -15,7 +15,7 @@ distro: distro-clean
 	# Change the name back to dist
 	-mv root dist
 
-deploy:
+deploy: distro
 	# Ensure the distro exist
 	ls distro/terminal.zip
 	# Copy the distro to production

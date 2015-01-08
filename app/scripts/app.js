@@ -29,4 +29,33 @@ angular.module('terminalApp', [
         number = Math.floor(Math.log(bytes) / Math.log(1024));
       return (bytes / Math.pow(1024, Math.floor(number))).toFixed(precision) + ' ' + units[number];
     };
+  })
+  .filter('time', function() {
+    return function(milliseconds) {
+      if (milliseconds === undefined) {
+        return '';
+      }
+      return milliseconds + ' ms';
+      //var millis = parseInt(milliseconds % 1000);
+/*      var seconds = parseInt((milliseconds / 1000) % 60);
+      var minutes = parseInt((milliseconds / (1000 * 60)) % 60);
+      var hours = parseInt((milliseconds / (1000 * 60 * 60)) % 24);
+      var out = '';
+
+      minutes = (parseInt(minutes) + (60 * parseInt(hours)));
+      minutes = (minutes < 10) ? '0' + minutes : minutes;
+      seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+      out = minutes + ':' + seconds;
+
+      if (withHour) {
+        hours = (hours < 10) ? '0' + hours : hours;
+        minutes = (minutes < 10) ? '0' + minutes : minutes;
+        seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+        out = hours + ':' + minutes + ':' + seconds;
+      }
+
+      return out;*/
+    };
   });
