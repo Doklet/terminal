@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('terminalApp')
-  .controller('MainCtrl', function($scope, $http, PipeService) {
+  .controller('MainCtrl', function($scope, $location, $http, PipeService, Client) {
 
     $scope.info = undefined;
     $scope.error = undefined;
+
+    Client.setSessionId($location.search().token);
+
+    $scope.token = Client.getSessionId();
 
     $scope.selectedTab = 'input';
     $scope.outputFormat = 'raw';
