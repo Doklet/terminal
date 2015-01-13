@@ -6,7 +6,7 @@ angular.module('terminalApp')
     var _sessionId;
 
     this.reset = function() {
-      _sessionId = undefined;  
+      _sessionId = undefined;
     };
 
     this.setSessionId = function(SessionId) {
