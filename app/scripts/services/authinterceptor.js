@@ -16,7 +16,7 @@ angular.module('terminalApp')
       responseError: function(response) {
         if (response.status === 401) {
           // handle the case where the user is not authenticated
-          $location.path('www.google.com');
+          //$location.path('www.google.com');
         }
         return $q.reject(response);
       }

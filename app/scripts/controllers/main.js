@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('terminalApp')
-  .controller('MainCtrl', function($scope, $location, $http, PipeService, Client) {
+  .controller('MainCtrl', function($scope, $location, $http, $window, PipeService, Client) {
 
     $scope.info = undefined;
     $scope.error = undefined;
 
-    Client.setSessionId($location.search().token);
+    Client.setSessionId($window.unescape($location.search().token));
 
     $scope.token = Client.getSessionId();
 
