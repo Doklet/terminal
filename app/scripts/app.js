@@ -1,17 +1,22 @@
 'use strict';
 
 angular.module('terminalApp', [
-    'apiMock',
     'ngCookies',
     'ngResource',
     'ngSanitize',
-    'ngRoute'
+    'ngRoute',
+    'jsonFormatter',
+    'apiMock'
   ])
   .config(function($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .when('/pipe-new', {
+        templateUrl: 'views/pipe-new.html',
+        controller: 'PipeNewCtrl'
       })
       .otherwise({
         redirectTo: '/'

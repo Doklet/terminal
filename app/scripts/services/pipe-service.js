@@ -7,6 +7,10 @@ angular.module('terminalApp')
       return $http.get('/api/pipe');
     };
 
+    this.newPipe = function(pipe) {
+      return $http.post('/api/pipe', pipe);
+    };
+
     this.run = function(pipe, input) {
       var pipeArg = 'pipe=' + pipe;
       return $http.post('/api/pipe/run?' + pipeArg, input);

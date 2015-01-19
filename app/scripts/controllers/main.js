@@ -14,27 +14,14 @@ angular.module('terminalApp')
     $scope.outputFormat = 'raw';
 
     PipeService.getAllPipes()
-      .success(function(response) {
-        $scope.pipes = response;
+      .success(function(pipes) {
+        Client.setPipes(pipes);
+        $scope.pipes = Client.getPipes();
       })
       .error(function() {
         $scope.info = undefined;
         $scope.error = 'Failed to fetch pipes';
       });
-
-    /*    $scope.pipes = [{
-          id: '0',
-          userId: '0',
-          name: 'Echo',
-          description: 'Descadassad  sadasdas  s dasdasddsasdsd sadds   sadasdsadasdads sdasdasd sdsddddddddddsdsddsdsdsdsdsdsdssddsdsdsds  sddsdsd ',
-          pipe: 'echo'
-        }, {
-          id: '1',
-          userId: '0',
-          name: 'Git',
-          description: 'Git log to table',
-          pipe: 'split -s commit | tokenize --key=commit --key=Author --key=Date --rest=Msg | trim --start=: -s whitespace -s eol | output -t table --name=git_log -c commit -c author -c date -c msg'
-        }];*/
 
     $scope.suggestions = [{
       name: 'split',
@@ -58,6 +45,13 @@ angular.module('terminalApp')
 
     $scope.mode = $scope.Modes.CommandLine;
 
+    $scope.OutputFormats = {
+      Raw: 0,
+      Json: 1
+    };
+
+    $scope.outputFormat = $scope.OutputFormats.Raw;
+
     $scope.pipeSelected = function(selectedPipe) {
       $scope.pipe = selectedPipe.name;
       $scope.selectedPipe = selectedPipe;
@@ -65,6 +59,19 @@ angular.module('terminalApp')
 
     $scope.clearInput = function() {
       $scope.input = '';
+    };
+
+    $scope.isJsonOutput = function() {
+      // If the output is a array it's invalid
+      if ($scope.output instanceof Array) {
+        return true;
+      }
+      // otherwise it's a not a valid json output
+      return false;
+    };
+
+    $scope.savePipe = function() {
+      $location.path('/pipe-new');
     };
 
     $scope.submit = function() {
@@ -94,7 +101,7 @@ angular.module('terminalApp')
               $scope.output = response;
             });
           break;
-          
+
         case $scope.Modes.SavedPipe:
           PipeService.runPipeWithId($scope.selectedPipe.id, $scope.input)
             .success(function(response) {

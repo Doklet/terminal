@@ -2,14 +2,13 @@
 <div class="alert alert-info" ng-show="info!=undefined">{{info}}</div>
 
 <div class="container">
-token:{{token}}
   <div class="row">
     <div class="col-md-12">
       <div class="btn-group" role="group">
         <button type="button" class="btn btn-default active" ng-click="mode=Modes.CommandLine" ng-class="{ 'active' : mode == Modes.CommandLine }">Command Line</button>
         <button type="button" class="btn btn-default" ng-click="mode=Modes.SavedPipe" ng-class="{ 'active' : mode == Modes.SavedPipe }">Saved Pipe</button>
       </div>
-      <button type="button" ng-show="mode == Modes.CommandLine" class="btn btn-success pull-right">Save Pipe</button>
+      <button type="button" ng-show="mode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save Pipe</button>
     </div>
   </div>
 
@@ -100,10 +99,20 @@ token:{{token}}
         <div class="col-md-12" ng-show="selectedTab=='output'">
           <div>
             <div class="panel panel-default">
-              <div class="panel-heading">
+              <div class="panel-heading clearfix">
+                <div class="btn-group pull-right" role="group">
+                  <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Raw" ng-class="{ 'active' : outputFormat == OutputFormats.Raw }">Raw</button>
+                  <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Json" ng-class="{ 'active' : outputFormat == OutputFormats.Json  }">Json</button>
+                </div>
                 <h5>{{output.length | bytes}} {{executionTime | time }}</h5>
               </div>
-              <textarea class="form-control myTextArea" rows="50">{{output}}</textarea>
+            </div>
+            <!-- Raw output -->
+            <textarea class="form-control myTextArea" ng-show="outputFormat===OutputFormats.Raw" rows="50">{{output}}</textarea>
+            <!-- Json output -->
+            <json-formatter ng-show="outputFormat===OutputFormats.Json && isJsonOutput() == true" json="items" open="1"></json-formatter>
+            <div class="jumbotron text-center" ng-show="outputFormat===OutputFormats.Json && isJsonOutput() == false">
+              <p>The output is not a valid json</p>
             </div>
           </div>
         </div>

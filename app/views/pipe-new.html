@@ -1,0 +1,34 @@
+<div class="panel panel-primary">
+
+  <div class="panel-heading text-center">Save Pipe</div>
+
+  <div class="panel-body" ng-model="pipe">
+    <form class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="inputName" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputName" ng-model="pipe.name" placeholder="My Pipe">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputDesc" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputDescription" ng-model="pipe.description" placeholder="Description">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputDesc" class="col-sm-2 control-label">Pipe</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputPipe" ng-model="pipe.pipe" placeholder="Pipe commands">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default btn-success" ng-click="save()">Save</button>
+          <button type="submit" class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>

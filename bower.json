@@ -11,7 +11,8 @@
     "angular-cookies": "1.2.6",
     "angular-sanitize": "1.2.6",
     "angular-route": "1.2.6",
-    "angular-apimock": "~0.2.0"
+    "angular-apimock": "~0.2.0",
+    "json-formatter": "~0.2.7"
   },
   "devDependencies": {
     "angular-mocks": "1.2.6",
