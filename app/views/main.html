@@ -18,16 +18,15 @@
 
   <div class="row">
     <div class="col-md-12">
-
       <!-- Pipe View-->
       <div ng-show="mode == Modes.SavedPipe">
         <div class="input-group">
-          <input type="text" class="form-control" ng-model="pipe" placeholder="Enter the name of the pipe">
+          <input type="text" class="form-control" ng-keydown="showSuggestions()" ng-model="pipe" placeholder="Enter the name of the pipe">
           <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
         </span>
         </div>
-        <div class="panel panel-default" ng-show="pipe.length > 0">
+        <div class="panel panel-default overlay" ng-show="pipe.length > 0 && visibleSuggestions == true">
           <div class="panel-body">
             <table class="table table-hover">
               <tbody>
@@ -45,17 +44,17 @@
       <!-- Command Line  View -->
       <div ng-show="mode == Modes.CommandLine">
         <div class="input-group">
-          <input type="text" class="form-control" ng-model="commands" placeholder="Enter commands">
+          <input type="text" class="form-control" ng-keydown="showSuggestions()" ng-model="commands" placeholder="Enter commands">
           <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
         </span>
         </div>
 
-        <div class="panel panel-default" ng-show="commands.length > 0">
+        <div class="panel panel-default overlay" ng-show="commands.length > 0 && visibleSuggestions == true">
           <div class="panel-body">
             <table class="table">
               <tr ng-repeat="s in suggestions | filter:commands">
-                <td style="border-top: none;">{{s.name}}</td>
+                <td style="border-top: none;"><a>{{s.name}}</a></td>
                 <td style="border-top: none;">{{s.desc}}</td>
                 <td style="border-top: none;">{{s.example}}</td>
               </tr>
@@ -93,7 +92,7 @@
               </div>
               <h5>{{input.length | bytes}}</h5>
             </div>
-            <textarea class="form-control myTextArea" rows="50" ng-model="input"></textarea>
+            <textarea class="form-control myTextArea" rows="10" ng-model="input"></textarea>
           </div>
         </div>
         <div class="col-md-12" ng-show="selectedTab=='output'">
@@ -108,7 +107,7 @@
               </div>
             </div>
             <!-- Raw output -->
-            <textarea class="form-control myTextArea" ng-show="outputFormat===OutputFormats.Raw" rows="50">{{output}}</textarea>
+            <textarea class="form-control myTextArea" ng-show="outputFormat===OutputFormats.Raw" rows="10">{{output}}</textarea>
             <!-- Json output -->
             <json-formatter ng-show="outputFormat===OutputFormats.Json && isJsonOutput() == true" json="items" open="1"></json-formatter>
             <div class="jumbotron text-center" ng-show="outputFormat===OutputFormats.Json && isJsonOutput() == false">

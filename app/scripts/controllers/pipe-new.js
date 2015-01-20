@@ -8,6 +8,7 @@ angular.module('terminalApp')
       PipeService.newPipe($scope.pipe)
         .success(function(createdPipe) {
           Client.addPipe(createdPipe);
+          $location.path('/');
         })
         .error(function(response) {
           $scope.info = undefined;

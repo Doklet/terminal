@@ -45,6 +45,8 @@ angular.module('terminalApp')
 
     $scope.mode = $scope.Modes.CommandLine;
 
+    $scope.hideSuggestions = true;
+
     $scope.OutputFormats = {
       Raw: 0,
       Json: 1
@@ -52,9 +54,14 @@ angular.module('terminalApp')
 
     $scope.outputFormat = $scope.OutputFormats.Raw;
 
+    $scope.showSuggestions = function() {
+      $scope.visibleSuggestions = true;
+    };
+
     $scope.pipeSelected = function(selectedPipe) {
       $scope.pipe = selectedPipe.name;
       $scope.selectedPipe = selectedPipe;
+      $scope.visibleSuggestions = false;
     };
 
     $scope.clearInput = function() {
@@ -79,6 +86,7 @@ angular.module('terminalApp')
       $scope.error = undefined;
       $scope.output = undefined;
       $scope.executionTime = undefined;
+      $scope.visibleSuggestions = false;
 
       var start = new Date();
 
