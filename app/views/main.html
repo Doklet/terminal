@@ -21,9 +21,9 @@
       <!-- Pipe View-->
       <div ng-show="mode == Modes.SavedPipe">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="showSuggestions()" ng-model="pipe" placeholder="Enter the name of the pipe">
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipe" placeholder="Enter the name of the pipe" ng-disabled="processingPipe" />
           <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
+          <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="processingPipe">Run</button>
         </span>
         </div>
         <div class="panel panel-default overlay" ng-show="pipe.length > 0 && visibleSuggestions == true">
@@ -44,9 +44,9 @@
       <!-- Command Line  View -->
       <div ng-show="mode == Modes.CommandLine">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="showSuggestions()" ng-model="commands" placeholder="Enter commands">
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="commands" placeholder="Enter commands" ng-disabled="processingPipe" />
           <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" ng-click="submit()">Run</button>
+          <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="processingPipe">Run</button>
         </span>
         </div>
 
@@ -54,7 +54,8 @@
           <div class="panel-body">
             <table class="table">
               <tr ng-repeat="s in suggestions | filter:commands">
-                <td style="border-top: none;"><a>{{s.name}}</a></td>
+                <td style="border-top: none;"><a>{{s.name}}</a>
+                </td>
                 <td style="border-top: none;">{{s.desc}}</td>
                 <td style="border-top: none;">{{s.example}}</td>
               </tr>
@@ -92,28 +93,53 @@
               </div>
               <h5>{{input.length | bytes}}</h5>
             </div>
-            <textarea class="form-control myTextArea" rows="10" ng-model="input"></textarea>
+            <textarea class="form-control myTextArea" rows="10" ng-model="input" placeholder="Enter input text here"></textarea>
           </div>
         </div>
         <div class="col-md-12" ng-show="selectedTab=='output'">
-          <div>
-            <div class="panel panel-default">
-              <div class="panel-heading clearfix">
-                <div class="btn-group pull-right" role="group">
-                  <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Raw" ng-class="{ 'active' : outputFormat == OutputFormats.Raw }">Raw</button>
-                  <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Json" ng-class="{ 'active' : outputFormat == OutputFormats.Json  }">Json</button>
+
+          <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+              <div class="btn-group pull-right" role="group">
+                <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Raw" ng-class="{ 'active' : outputFormat == OutputFormats.Raw }" ng-disabled="processingPipe">Raw</button>
+                <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Json" ng-class="{ 'active' : outputFormat == OutputFormats.Json }" ng-disabled="processingPipe">Json</button>
+                <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Table" ng-class="{ 'active' : outputFormat == OutputFormats.Table }" ng-disabled="processingPipe">Table</button>
+              </div>
+              <h5>{{output.length | bytes}} {{executionTime | time }}</h5>
+            </div>
+            <!-- TODO rewrite to use app enums instead of int's-->
+            <div ng-switch on="outputFormat">
+              <!-- Processing pipe view-->
+              <div ng-switch-when="0" class="jumbotron text-center">
+                <p>Processing data, please wait</p>
+              </div>
+              <!-- Raw output -->
+              <div ng-switch-when="1">
+                <textarea class="form-control myTextArea" rows="10" readonly>{{output}}</textarea>
+              </div>
+              <!-- Json output -->
+              <div ng-switch-when="2">
+                <json-formatter ng-show="isJsonOutput() == true" json="output" open="1"></json-formatter>
+                <div class="jumbotron text-center" ng-if="isJsonOutput() == false">
+                  <p>The output is not a valid json</p>
                 </div>
-                <h5>{{output.length | bytes}} {{executionTime | time }}</h5>
+              </div>
+              <div ng-switch-when="3">
+
+                <table class="table" ng-if="outputFormat==OutputFormats.Table">
+                  <tr ng-repeat="item in output">
+                    <td ng-repeat="(key, value) in item">{{ value | limitTo : 80 }} </td>
+                  </tr>
+                </table>
+
+              </div>
+
+              <div ng-switch-default>
+                Default view should not happen!
               </div>
             </div>
-            <!-- Raw output -->
-            <textarea class="form-control myTextArea" ng-show="outputFormat===OutputFormats.Raw" rows="10">{{output}}</textarea>
-            <!-- Json output -->
-            <json-formatter ng-show="outputFormat===OutputFormats.Json && isJsonOutput() == true" json="items" open="1"></json-formatter>
-            <div class="jumbotron text-center" ng-show="outputFormat===OutputFormats.Json && isJsonOutput() == false">
-              <p>The output is not a valid json</p>
-            </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -1,3 +1,6 @@
+<div class="alert alert-danger" ng-show="error!=undefined">{{error}}</div>
+<div class="alert alert-info" ng-show="info!=undefined">{{info}}</div>
+
 <div class="panel panel-primary">
 
   <div class="panel-heading text-center">Save Pipe</div>
@@ -11,9 +14,9 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="inputDesc" class="col-sm-2 control-label">Pipe</label>
+        <label for="inputDesc" class="col-sm-2 control-label">Commands</label>
         <div class="col-sm-10">
-          <input type="text" class="form-control" id="inputPipe" ng-model="pipe.pipe" placeholder="Commands">
+          <input type="text" class="form-control" id="inputPipe" ng-model="pipe.pipe" placeholder="Commands" readonly="true">
         </div>
       </div>
       <div class="form-group">

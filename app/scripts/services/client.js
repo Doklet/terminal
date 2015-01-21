@@ -5,6 +5,7 @@ angular.module('terminalApp')
 
     var _pipes = [];
     var _sessionId;
+    var _currentCommands;
 
     this.reset = function() {
       _sessionId = undefined;
@@ -28,6 +29,14 @@ angular.module('terminalApp')
 
     this.addPipe = function(pipe) {
       _pipes.push(pipe);
+    };
+
+    this.setCurrentCommands = function(commands) {
+      _currentCommands = commands;
+    };
+
+    this.getCurrentCommands = function() {
+      return _currentCommands;
     };
 
   });

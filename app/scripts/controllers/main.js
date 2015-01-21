@@ -3,6 +3,71 @@
 angular.module('terminalApp')
   .controller('MainCtrl', function($scope, $location, $http, $window, PipeService, Client) {
 
+    // --- Start table ---//
+/*    $scope.data = [{
+      name: 'Moroni',
+      age: 50
+    }, {
+      name: 'Tiancum',
+      age: 43
+    }, {
+      name: 'Jacob',
+      age: 27
+    }, {
+      name: 'Nephi',
+      age: 29
+    }, {
+      name: 'Enos',
+      age: 34
+    }, {
+      name: 'Tiancum',
+      age: 43
+    }, {
+      name: 'Jacob',
+      age: 27
+    }, {
+      name: 'Nephi',
+      age: 29
+    }, {
+      name: 'Enos',
+      age: 34
+    }, {
+      name: 'Tiancum',
+      age: 43
+    }, {
+      name: 'Jacob',
+      age: 27
+    }, {
+      name: 'Nephi',
+      age: 29
+    }, {
+      name: 'Enos',
+      age: 34
+    }, {
+      name: 'Tiancum',
+      age: 43
+    }, {
+      name: 'Jacob',
+      age: 27
+    }, {
+      name: 'Nephi',
+      age: 29
+    }, {
+      name: 'Enos',
+      age: 34
+    }];*/
+
+/*    $scope.tableParams = new ngTableParams({
+      page: 1, // show first page
+      count: 10 // count per page
+    }, {
+      total: data.length, // length of data
+      getData: function($defer, params) {
+        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+      }
+    });*/
+    // ------ End table ----//
+
     $scope.info = undefined;
     $scope.error = undefined;
 
@@ -45,17 +110,30 @@ angular.module('terminalApp')
 
     $scope.mode = $scope.Modes.CommandLine;
 
-    $scope.hideSuggestions = true;
-
     $scope.OutputFormats = {
-      Raw: 0,
-      Json: 1
+      Processing: 0,
+      Raw: 1,
+      Json: 2,
+      Table: 3
     };
 
     $scope.outputFormat = $scope.OutputFormats.Raw;
 
-    $scope.showSuggestions = function() {
-      $scope.visibleSuggestions = true;
+    $scope.hideSuggestions = true;
+    $scope.processingPipe = false;
+
+    $scope.keyDownCommandLine = function(event) {
+      switch (event.keyCode) {
+        case 27: // escape
+          $scope.visibleSuggestions = false;
+          break;
+        case 13: // return
+          $scope.submit();
+          break;
+        default:
+          $scope.visibleSuggestions = true;
+          break;
+      }
     };
 
     $scope.pipeSelected = function(selectedPipe) {
@@ -78,6 +156,7 @@ angular.module('terminalApp')
     };
 
     $scope.savePipe = function() {
+      Client.setCurrentCommands($scope.commands);
       $location.path('/pipe-new');
     };
 
@@ -87,16 +166,21 @@ angular.module('terminalApp')
       $scope.output = undefined;
       $scope.executionTime = undefined;
       $scope.visibleSuggestions = false;
+      $scope.processingPipe = true;
+      $scope.outputFormat = $scope.OutputFormats.Processing;
 
       var start = new Date();
+      $scope.selectedTab = 'output';
 
       switch ($scope.mode) {
 
         case $scope.Modes.CommandLine:
           PipeService.run($scope.commands, $scope.input)
             .success(function(response) {
-
               /*$scope.type = response.headers('Content-Type');*/
+
+              $scope.outputFormat = $scope.OutputFormats.Raw;
+              $scope.processingPipe = false;
               $scope.output = response;
               $scope.selectedTab = 'output';
 
@@ -104,6 +188,8 @@ angular.module('terminalApp')
               $scope.executionTime = now.getMilliseconds() - start.getMilliseconds();
             })
             .error(function(response) {
+              $scope.outputFormat = $scope.OutputFormats.Raw;
+              $scope.processingPipe = false;
               $scope.info = undefined;
               $scope.error = 'Failed to execute command';
               $scope.output = response;
@@ -114,6 +200,8 @@ angular.module('terminalApp')
           PipeService.runPipeWithId($scope.selectedPipe.id, $scope.input)
             .success(function(response) {
 
+              $scope.outputFormat = $scope.OutputFormats.Raw;
+              $scope.processingPipe = false;
               $scope.output = response;
               $scope.selectedTab = 'output';
 
@@ -121,13 +209,15 @@ angular.module('terminalApp')
               $scope.executionTime = now.getMilliseconds() - start.getMilliseconds();
             })
             .error(function(response) {
+              $scope.outputFormat = $scope.OutputFormats.Raw;
+              $scope.processingPipe = false;
               $scope.info = undefined;
               $scope.error = 'Failed to execute pipe';
               $scope.output = response;
             });
           break;
-
       }
+
     };
 
 
