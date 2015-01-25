@@ -126,10 +126,24 @@
               </div>
               <div ng-switch-when="3">
 
-                <table class="table" ng-if="outputFormat==OutputFormats.Table">
-                  <tr ng-repeat="item in output">
-                    <td ng-repeat="(key, value) in item">{{ value | limitTo : 80 }} </td>
-                  </tr>
+                <table class="table table-condensed table-hover" ng-if="outputFormat==OutputFormats.Table">
+                
+                  <tbody>
+                    <tr ng-repeat-start="item in output" ng-init="item.expanded=false" ng-click="item.expanded=!item.expanded" ng-class="{ 'active' : item.expanded == true }">
+                      <td ng-repeat="(key, value) in item | filter:key!='expanded'"> {{ value | limitTo : 50 }} </td>
+                    </tr>
+                    <tr ng-repeat-end="" ng-if="item.expanded">
+                    <!-- TODO Set dynamic columns here-->
+                      <td colspan="7">
+                        <dl class="dl-horizontal">
+                          <div ng-repeat="(key, value) in item">
+                            <dt>{{key}}</dt>
+                            <dd>{{value}}</dd>
+                          </div>
+                        </dl>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
 
               </div>

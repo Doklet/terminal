@@ -11,6 +11,9 @@ body {
 }
 /*Angular grid css*/
 
+.panel {
+  overflow: auto;
+}
 .fixed-horizontal {
   resize: vertical;
 }

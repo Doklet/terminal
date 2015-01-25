@@ -5,7 +5,6 @@ angular.module('terminalApp', [
     'ngResource',
     'ngSanitize',
     'ngRoute',
-    'ngTable',
     'jsonFormatter',
     'apiMock'
   ])
