@@ -146,9 +146,9 @@
                         <!-- Need to remove the $$ parameters from the length ? -->
                         <td colspan="{{keys(output[0]).length}}">
                           <dl class="dl-horizontal">
-                            <div ng-repeat="(key, value) in item">
+                            <div ng-repeat="key in keys(item) | filter:'!$$'">
                               <dt>{{key}}</dt>
-                              <dd>{{value}}</dd>
+                              <dd>{{item[key]}}</dd>
                             </div>
                           </dl>
                         </td>

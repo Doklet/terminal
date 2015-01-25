@@ -13,7 +13,7 @@ angular.module('terminalApp')
 
     this.run = function(pipe, input) {
       var pipeArg = 'pipe=' + pipe;
-      return $http.get('/api/pipe/run?' + pipeArg, input);
+      return $http.post('/api/pipe/run?' + pipeArg, input);
     };
 
     this.runPipeWithId = function(pipeId, input) {
