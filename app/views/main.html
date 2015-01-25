@@ -46,8 +46,8 @@
         <div class="input-group">
           <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="commands" placeholder="Enter commands" ng-disabled="processingPipe" />
           <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="processingPipe">Run</button>
-        </span>
+            <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="processingPipe">Run</button>
+          </span>
         </div>
 
         <div class="panel panel-default overlay" ng-show="commands.length > 0 && visibleSuggestions == true">
@@ -105,6 +105,9 @@
                 <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Json" ng-class="{ 'active' : outputFormat == OutputFormats.Json }" ng-disabled="processingPipe">Json</button>
                 <button type="button" class="btn btn-default" ng-click="outputFormat=OutputFormats.Table" ng-class="{ 'active' : outputFormat == OutputFormats.Table }" ng-disabled="processingPipe">Table</button>
               </div>
+              <div class="btn-group pull-right col-md-3" role="group">
+                <input type="text" class="form-control" ng-model="searchRows" placeholder="Filter rows" ng-if="outputFormat == OutputFormats.Table" />
+              </div>
               <h5>{{output.length | bytes}} {{executionTime | time }}</h5>
             </div>
             <!-- TODO rewrite to use app enums instead of int's-->
@@ -124,27 +127,36 @@
                   <p>The output is not a valid json</p>
                 </div>
               </div>
+              <!-- Table output -->
               <div ng-switch-when="3">
 
-                <table class="table table-condensed table-hover" ng-if="outputFormat==OutputFormats.Table">
-                
-                  <tbody>
-                    <tr ng-repeat-start="item in output" ng-init="item.expanded=false" ng-click="item.expanded=!item.expanded" ng-class="{ 'active' : item.expanded == true }">
-                      <td ng-repeat="(key, value) in item | filter:key!='expanded'"> {{ value | limitTo : 50 }} </td>
-                    </tr>
-                    <tr ng-repeat-end="" ng-if="item.expanded">
-                    <!-- TODO Set dynamic columns here-->
-                      <td colspan="7">
-                        <dl class="dl-horizontal">
-                          <div ng-repeat="(key, value) in item">
-                            <dt>{{key}}</dt>
-                            <dd>{{value}}</dd>
-                          </div>
-                        </dl>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div class="table-responsive">
+
+                  <table class="table table-condensed table-hover" ng-if="outputFormat==OutputFormats.Table">
+                    <thead>
+                      <tr>
+                        <td ng-repeat="key in keys(output[0]) | filter:'!$$'"> {{key}} </td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat-start="item in output" ng-init="item.$$expanded=false" ng-click="item.$$expanded=!item.$$expanded" ng-class="{ 'active' : item.$$expanded == true }">
+                        <td ng-repeat="key in keys(item) | filter:'!$$'"> {{ item[key] | limitTo : 50 }} </td>
+                      </tr>
+                      <tr ng-repeat-end="" ng-if="item.$$expanded">
+                        <!-- Need to remove the $$ parameters from the length ? -->
+                        <td colspan="{{keys(output[0]).length}}">
+                          <dl class="dl-horizontal">
+                            <div ng-repeat="(key, value) in item">
+                              <dt>{{key}}</dt>
+                              <dd>{{value}}</dd>
+                            </div>
+                          </dl>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
 
               </div>
 
