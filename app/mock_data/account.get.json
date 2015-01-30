@@ -1,0 +1,9 @@
+[{
+  "id": "0",
+  "name": "AdamAccount1",
+  "provider": "local"
+}, {
+  "id": "fea287a4-81f9-4c92-b565-02db816629db",
+  "name": "LeoDrop",
+  "provider": "dropbox"
+}]

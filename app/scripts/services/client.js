@@ -4,6 +4,7 @@ angular.module('terminalApp')
   .service('Client', function Client() {
 
     var _pipes = [];
+    var _accounts = [];
     var _sessionId;
     var _currentCommands;
 
@@ -29,6 +30,14 @@ angular.module('terminalApp')
 
     this.addPipe = function(pipe) {
       _pipes.push(pipe);
+    };
+
+    this.setAccounts = function(accounts) {
+      _accounts = accounts;
+    };
+
+    this.getAccounts = function() {
+      return _accounts;
     };
 
     this.setCurrentCommands = function(commands) {
