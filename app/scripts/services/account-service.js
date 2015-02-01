@@ -8,7 +8,7 @@ angular.module('terminalApp')
     };
 
     this.fetchFileinfo = function(accountId, path) {
-      return $http.get('/api/' + accountId + '/file_info/' + path);
+      return $http.get('/api/account/' + accountId + '/file_info/' + path);
     };
 
   });

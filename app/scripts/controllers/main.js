@@ -78,8 +78,10 @@ angular.module('terminalApp')
     $scope.in = {
       commandMode: $scope.Modes.CommandLine,
       mode: $scope.InputModes.Text,
+      pipe: undefined,
       text: undefined,
-      file: undefined
+      file: undefined,
+      fileinfos: undefined
     };
 
     $scope.out = {
@@ -97,7 +99,7 @@ angular.module('terminalApp')
     };
 
     $scope.breadcrumbPath = [{
-      name: 'Home',
+      name: 'Account',
       accountId: undefined,
       path: undefined
     }];
@@ -121,28 +123,36 @@ angular.module('terminalApp')
     };
 
     $scope.pipeSelected = function(selectedPipe) {
-      $scope.pipe = selectedPipe.name;
+      $scope.pipeFilter = selectedPipe.name;
+      $scope.in.pipe = selectedPipe;
       $scope.selected.pipe = selectedPipe;
       $scope.visibleSuggestions = false;
     };
 
     $scope.breadcrumbPathSelected = function(breadcrumbPath) {
+
       // If the accountId is not set we go to Home
       if (breadcrumbPath.accountId === undefined) {
 
         $scope.breadcrumbPath = [{
-          name: 'Home',
+          name: 'Account',
           accountId: undefined,
           path: undefined
         }];
 
       } else {
+        // Set correct breadcrumb path
+        var index = $scope.breadcrumbPath.indexOf(breadcrumbPath);
+        $scope.breadcrumbPath = $scope.breadcrumbPath.splice(0, index + 1);
+        // Clear the current fileinfos list
+        $scope.in.fileinfos = undefined;
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo(breadcrumbPath.accountId, breadcrumbPath.path)
           .success(function(result) {
-            $scope.fileinfos = result.files;
+            $scope.in.fileinfos = result.files;
           })
           .error(function() {
+            $scope.in.fileinfos = [];
             $scope.info = undefined;
             $scope.error = 'Failed to fetch fileinfo';
           });
@@ -151,40 +161,52 @@ angular.module('terminalApp')
     };
 
     $scope.accountSelected = function(selectedAccount) {
-      $scope.selectedAccount = selectedAccount;
-      // Set the breadcrumb to account view
-      $scope.breadcrumbPath = [{
-        name: 'Home',
-        accountId: undefined,
-        path: undefined
-      }, {
+      $scope.selected.account = selectedAccount;
+
+      var part = {
         name: selectedAccount.name,
         accountId: selectedAccount.id,
-        path: '/test'
-      }];
+        path: '/'
+      };
+
+      $scope.breadcrumbPath = [{
+        name: 'Account',
+        accountId: undefined,
+        path: undefined
+      }, part];
+
+      $scope.breadcrumbPathSelected(part);
+
     };
 
     $scope.fileSelected = function(selectedFile) {
-      $scope.selectedFile = selectedFile;
-      if (selectedFile.is_dir === true) {
+      if (selectedFile.isDir === true) {
         // Load the fileinfo for the account and path
-        AccountService.fetchFileinfo($scope.selectedAccount.id, selectedFile.path)
+        AccountService.fetchFileinfo($scope.selected.account.id, selectedFile.path)
           .success(function(result) {
-            $scope.fileinfos = result.files;
+            $scope.in.fileinfos = result.files;
 
             $scope.breadcrumbPath.push({
               name: selectedFile.name,
-              accountId: $scope.selectedAccount.id,
+              accountId: $scope.selected.account.id,
               path: selectedFile.path
             });
-
           })
           .error(function() {
             $scope.info = undefined;
             $scope.error = 'Failed to fetch fileinfo';
           });
+      } else {
+        $scope.in.file = selectedFile;
+        $scope.selected.file = selectedFile;
       }
 
+    };
+
+    $scope.computeSelectedFilePath = function() {
+      if ($scope.selected.account !== undefined && $scope.in.file !== undefined) {
+        return $scope.selected.account.name + $scope.in.file.path;
+      }
     };
 
     $scope.clearInput = function() {
@@ -201,7 +223,7 @@ angular.module('terminalApp')
     };
 
     $scope.savePipe = function() {
-      Client.setCurrentCommands($scope.commands);
+      Client.setCurrentCommands($scope.in.commands);
       $location.path('/pipe-new');
     };
 

@@ -1,14 +1,18 @@
-<div class="alert alert-danger" ng-show="error!=undefined">{{error}}</div>
-<div class="alert alert-info" ng-show="info!=undefined">{{info}}</div>
+<div class="alert alert-danger" ng-show="error!=undefined">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+  </button>
+  {{error}}
+</div>
+<div class="alert alert-info alert-dismissible" ng-show="info!=undefined">{{info}}</div>
 
 <div class="container">
   <div class="row">
     <div class="col-md-12">
       <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default active" ng-click="in.mode=Modes.CommandLine" ng-class="{ 'active' : in.mode == Modes.CommandLine }">Command Line</button>
-        <button type="button" class="btn btn-default" ng-click="in.mode=Modes.SavedPipe" ng-class="{ 'active' : in.mode == Modes.SavedPipe }">Saved Pipe</button>
+        <button type="button" class="btn btn-default active" ng-click="in.commandMode=Modes.CommandLine" ng-class="{ 'active' : in.commandMode == Modes.CommandLine }">Command Line</button>
+        <button type="button" class="btn btn-default" ng-click="in.commandMode=Modes.SavedPipe" ng-class="{ 'active' : in.commandMode == Modes.SavedPipe }">Saved Pipe</button>
       </div>
-      <button type="button" ng-show="in.mode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save Pipe</button>
+      <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save Pipe</button>
     </div>
   </div>
 
@@ -19,21 +23,21 @@
   <div class="row">
     <div class="col-md-12">
       <!-- Pipe View-->
-      <div ng-show="in.mode == Modes.SavedPipe">
+      <div ng-show="in.commandMode == Modes.SavedPipe">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipe" placeholder="Enter the name of the pipe" ng-disabled="out.processing" />
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" />
           <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="out.processing">Run</button>
+          <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="in.pipe==undefined || out.processing">Run</button>
         </span>
         </div>
-        <div class="panel panel-default overlay" ng-show="pipe.length > 0 && visibleSuggestions == true">
+        <div class="panel panel-default overlay" ng-show="pipeFilter.length > 0 && visibleSuggestions == true">
           <div class="panel-body">
             <table class="table table-hover">
               <tbody>
-                <tr ng-repeat="s in pipes | filter:pipe" ng-click="pipeSelected(s)">
-                  <td style="border-top: none;"><a>{{s.name}}</a>
+                <tr ng-repeat="pipe in pipes | filter:pipeFilter" ng-click="pipeSelected(pipe)" ng-class="{ 'active' : pipe == in.pipe }">
+                  <td style="border-top: none;"><a>{{pipe.name}}</a>
                   </td>
-                  <td style="border-top: none;">{{s.description}}</td>
+                  <td style="border-top: none;">{{pipe.description}}</td>
                 </tr>
               </tbody>
             </table>
@@ -42,15 +46,15 @@
       </div>
 
       <!-- Command Line  View -->
-      <div ng-show="in.mode == Modes.CommandLine">
+      <div ng-show="in.commandMode == Modes.CommandLine">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="commands" placeholder="Enter commands" ng-disabled="out.processing" />
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="in.commands" placeholder="Enter commands" ng-disabled="out.processing" />
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="out.processing">Run</button>
+            <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="in.commands.length == 0 || out.processing">Run</button>
           </span>
         </div>
 
-        <div class="panel panel-default overlay" ng-show="commands.length > 0 && visibleSuggestions == true">
+        <div class="panel panel-default overlay" ng-show="in.commands.length > 0 && visibleSuggestions == true">
           <div class="panel-body">
             <table class="table">
               <tr ng-repeat="s in suggestions | filter:commands">
@@ -95,7 +99,8 @@
               <div class="btn-group pull-right col-md-1" role="group">
                 <button type="button" class="btn btn-default" ng-click="clearInput()" ng-if="in.mode==InputModes.Text">Clear</button>
               </div>
-              <h5>{{in.text.length | bytes}}</h5>
+              <h5 ng-if="in.mode==InputModes.Text">{{ in.text.length | bytes }}</h5>
+              <h5 ng-if="in.mode==InputModes.Account">{{ computeSelectedFilePath() }}</h5>
             </div>
             <div ng-switch on="in.mode">
               <!-- Text input -->
@@ -124,16 +129,26 @@
                 </table>
 
                 <!-- Fileinfo view-->
-                <table class="table table-hover" ng-if="breadcrumbPath.length>1">
-                  <tr ng-repeat="file in fileinfos" ng-if="breadcrumbPath.length>1" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selected.file }">
-                    <td>
-                      <dl>
-                        <dt>{{file.name}}</dt>
-                        <dd>{{file.is_dir}}</dd>
-                      </dl>
-                    </td>
-                  </tr>
+                <table class="table table-hover" ng-if="breadcrumbPath.length >1 && in.fileinfos !== undefined">
+                  <thead>
+                    <td>Name</td>
+                    <td>Type</td>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="file in in.fileinfos" ng-if="breadcrumbPath.length>1" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selected.file }">
+                      <td>
+                        <image src="images/folder.png" width="32px" height="32px" ng-if="file.isDir"></image>
+                        <image src="images/file.png" width="32px" height="32px" ng-if="file.isDir==false"></image>
+                        {{file.name}}
+                      </td>
+                      <td>{{file.isDir}}</td>
+                    </tr>
+                  </tbody>
                 </table>
+
+                <div ng-if="breadcrumbPath.length >1 && in.fileinfos == undefined" class="jumbotron text-center">
+                  <p>Loading, please wait</p>
+                </div>
 
               </div>
             </div>
