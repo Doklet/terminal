@@ -25,7 +25,7 @@
       <!-- Pipe View-->
       <div ng-show="in.commandMode == Modes.SavedPipe">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="visibleSuggestions=false"//>
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" ng-focus="visibleSuggestions=true"/>
           <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="runPipe()" ng-disabled="in.pipe==undefined || out.processing">Run</button>
         </span>
