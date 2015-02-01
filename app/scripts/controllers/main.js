@@ -114,7 +114,7 @@ angular.module('terminalApp')
           $scope.visibleSuggestions = false;
           break;
         case 13: // return
-          $scope.submit();
+          $scope.runPipe();
           break;
         default:
           $scope.visibleSuggestions = true;
@@ -227,7 +227,7 @@ angular.module('terminalApp')
       $location.path('/pipe-new');
     };
 
-    $scope.submit = function() {
+    $scope.runPipe = function() {
       $scope.info = undefined;
       $scope.error = undefined;
       $scope.out.output = undefined;
@@ -236,62 +236,53 @@ angular.module('terminalApp')
       $scope.out.processing = true;
       $scope.visibleSuggestions = false;
 
-      var start = new Date();
       $scope.selected.tab = $scope.TabModes.Output;
 
+      var commands;
+      var pipeId;
+      var textInput;
+      var filePathInput;
+
+      // Set commands or the pipeId to execute
       switch ($scope.in.commandMode) {
-
         case $scope.Modes.CommandLine:
-          PipeService.run($scope.in.commands, $scope.in.text)
-            .success(function(response) {
-              /*$scope.type = response.headers('Content-Type');*/
-
-              $scope.out.format = $scope.OutputFormats.Raw;
-              $scope.out.processing = false;
-              $scope.out.output = response;
-              $scope.selected.tab = $scope.TabModes.Output;
-
-              var now = new Date();
-              $scope.out.executionTime = now.getMilliseconds() - start.getMilliseconds();
-            })
-            .error(function(response) {
-              $scope.out.format = $scope.OutputFormats.Raw;
-              $scope.out.processing = false;
-              $scope.out.output = response;
-              $scope.selected.tab = $scope.TabModes.Output;
-
-              $scope.info = undefined;
-              $scope.error = 'Failed to execute command';
-            });
+          commands = $scope.in.commands;
           break;
-
         case $scope.Modes.SavedPipe:
-          PipeService.runPipeWithId($scope.in.pipe.id, $scope.in.text)
-            .success(function(response) {
-
-              $scope.out.format = $scope.OutputFormats.Raw;
-              $scope.out.processing = false;
-              $scope.out.output = response;
-
-              $scope.selected.tab = $scope.TabModes.Output;
-
-              var now = new Date();
-              $scope.out.executionTime = now.getMilliseconds() - start.getMilliseconds();
-            })
-            .error(function(response) {
-              $scope.out.format = $scope.OutputFormats.Raw;
-              $scope.out.processing = false;
-              $scope.out.output = response;
-
-              $scope.selected.tab = $scope.TabModes.Output;
-
-              $scope.info = undefined;
-              $scope.error = 'Failed to execute pipe';
-            });
+          pipeId = $scope.in.pipe.id;
           break;
       }
 
-    };
+      // Set the input, text or a file from the accounts
+      switch ($scope.in.mode) {
+        case $scope.InputModes.Text:
+          textInput = $scope.in.text;
+          break;
+        case $scope.InputModes.Account:
+          filePathInput = $scope.computeSelectedFilePath();
+          break;
+      }
 
+      // Execute the pipe with the provided parameters
+      PipeService.runPipe(commands, pipeId, textInput, filePathInput)
+        .success(function(response) {
+          /*$scope.type = response.headers('Content-Type');*/
+
+          $scope.out.format = $scope.OutputFormats.Raw;
+          $scope.out.processing = false;
+          $scope.out.output = response;
+          $scope.selected.tab = $scope.TabModes.Output;
+        })
+        .error(function(response) {
+          $scope.out.format = $scope.OutputFormats.Raw;
+          $scope.out.processing = false;
+          $scope.out.output = response;
+          $scope.selected.tab = $scope.TabModes.Output;
+
+          $scope.info = undefined;
+          $scope.error = 'Failed to execute command';
+        });
+
+    };
 
   });

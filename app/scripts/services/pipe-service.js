@@ -11,14 +11,28 @@ angular.module('terminalApp')
       return $http.post('/api/pipe', pipe);
     };
 
-    this.run = function(pipe, input) {
-      var pipeArg = 'pipe=' + pipe;
-      return $http.post('/api/pipe/run?' + pipeArg, input);
-    };
 
-    this.runPipeWithId = function(pipeId, input) {
-      var PipeArg = 'id=' + pipeId;
-      return $http.post('/api/pipe/run?' + PipeArg, input);
+    this.runPipe = function(commands, pipeId, text, filePath) {
+      var args = '';
+      var input = '';
+
+      if (commands !== undefined){
+        args += 'pipe=' + commands;
+      }
+
+      if (pipeId !== undefined){
+        args += 'id=' + pipeId;
+      }
+
+      if (filePath !== undefined){
+        args += '&input=' + filePath;
+      }
+
+      if (text !== undefined){
+        input = text;
+      }
+
+      return $http.post('/api/pipe/run?' + args, input);
     };
 
   });

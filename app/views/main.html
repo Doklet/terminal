@@ -25,12 +25,12 @@
       <!-- Pipe View-->
       <div ng-show="in.commandMode == Modes.SavedPipe">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" />
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="visibleSuggestions=false"//>
           <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="in.pipe==undefined || out.processing">Run</button>
+          <button class="btn btn-primary" type="button" ng-click="runPipe()" ng-disabled="in.pipe==undefined || out.processing">Run</button>
         </span>
         </div>
-        <div class="panel panel-default overlay" ng-show="pipeFilter.length > 0 && visibleSuggestions == true">
+        <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
           <div class="panel-body">
             <table class="table table-hover">
               <tbody>
@@ -48,13 +48,13 @@
       <!-- Command Line  View -->
       <div ng-show="in.commandMode == Modes.CommandLine">
         <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="in.commands" placeholder="Enter commands" ng-disabled="out.processing" />
+          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="in.commands" placeholder="Enter commands" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="visibleSuggestions=false"/>
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="submit()" ng-disabled="in.commands.length == 0 || out.processing">Run</button>
+            <button class="btn btn-primary" type="button" ng-click="runPipe()" ng-disabled="in.commands.length == 0 || out.processing">Run</button>
           </span>
         </div>
 
-        <div class="panel panel-default overlay" ng-show="in.commands.length > 0 && visibleSuggestions == true">
+        <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
           <div class="panel-body">
             <table class="table">
               <tr ng-repeat="s in suggestions | filter:commands">
@@ -118,7 +118,7 @@
 
                 <!-- Account view-->
                 <table class="table table-hover" ng-if="breadcrumbPath.length==1">
-                  <tr ng-repeat="account in accounts" ng-click="accountSelected(account)" ng-class="{ 'active' : account === selected.account }">
+                  <tr ng-repeat="account in accounts" ng-if="account.provider!='local'" ng-click="accountSelected(account)" ng-class="{ 'active' : account === selected.account }">
                     <td>
                       <dl>
                         <dt>{{account.name}}</dt>
