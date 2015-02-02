@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('terminalApp')
-  .controller('MainCtrl', function($scope, $location, $http, $window, PipeService, AccountService, Client) {
+  .controller('MainCtrl', function($scope, $location, $http, $window, $timeout, PipeService, AccountService, Client) {
 
     // The tab's the user can choose from
     $scope.TabModes = {
@@ -207,6 +207,14 @@ angular.module('terminalApp')
       if ($scope.selected.account !== undefined && $scope.in.file !== undefined) {
         return $scope.selected.account.name + $scope.in.file.path;
       }
+    };
+
+    $scope.inputBlur = function() {
+      $timeout(function() {
+          $scope.visibleSuggestions = false;
+        },
+        300
+      );
     };
 
     $scope.clearInput = function() {
