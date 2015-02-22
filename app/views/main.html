@@ -1,235 +1,238 @@
 <div class="alert alert-danger" ng-show="error!=undefined">
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
-  </button>
-  {{error}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    {{error}}
 </div>
 <div class="alert alert-info alert-dismissible" ng-show="info!=undefined">{{info}}</div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default active" ng-click="in.commandMode=Modes.CommandLine" ng-class="{ 'active' : in.commandMode == Modes.CommandLine }">Command Line</button>
-        <button type="button" class="btn btn-default" ng-click="in.commandMode=Modes.SavedPipe" ng-class="{ 'active' : in.commandMode == Modes.SavedPipe }">Saved Pipe</button>
-      </div>
-      <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save Pipe</button>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default active" ng-click="in.commandMode=Modes.CommandLine" ng-class="{ 'active' : in.commandMode == Modes.CommandLine }">Command Line</button>
+                <button type="button" class="btn btn-default" ng-click="in.commandMode=Modes.SavedPipe" ng-class="{ 'active' : in.commandMode == Modes.SavedPipe }">Saved Pipe</button>
+            </div>
+            <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save Pipe</button>
+        </div>
     </div>
-  </div>
 
-  <div class="row">
-    <br>
-  </div>
+    <div class="row">
+        <br>
+    </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <!-- Pipe View-->
-      <div ng-show="in.commandMode == Modes.SavedPipe">
-        <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="inputBlur()" />
-          <span class="input-group-btn">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Pipe View-->
+            <div ng-show="in.commandMode == Modes.SavedPipe">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="pipeFilter" placeholder="Enter the name of the pipe" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="inputBlur()" />
+                    <span class="input-group-btn">
           <button class="btn btn-primary" type="button" ng-click="runPipe()" ng-disabled="in.pipe==undefined || out.processing">Run</button>
         </span>
-        </div>
-        <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
-          <div class="panel-body">
-            <table class="table table-hover">
-              <tbody>
-                <tr ng-repeat="pipe in pipes | filter:pipeFilter" ng-click="pipeSelected(pipe)" ng-class="{ 'active' : pipe == in.pipe }">
-                  <td style="border-top: none;"><a>{{pipe.name}}</a>
-                  </td>
-                  <td style="border-top: none;">{{pipe.description}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+                </div>
+                <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
+                    <div class="panel-body">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr ng-repeat="pipe in pipes | filter:pipeFilter" ng-click="pipeSelected(pipe)" ng-class="{ 'active' : pipe == in.pipe }">
+                                    <td style="border-top: none;"><a>{{pipe.name}}</a>
+                                    </td>
+                                    <td style="border-top: none;">{{pipe.description}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-      <!-- Command Line  View -->
-      <div ng-show="in.commandMode == Modes.CommandLine">
-        <div class="input-group">
-          <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="in.commands" placeholder="Enter commands" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="inputBlur()"/>
-          <span class="input-group-btn">
+            <!-- Command Line  View -->
+            <div ng-show="in.commandMode == Modes.CommandLine">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="in.commands" placeholder="Enter commands" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="inputBlur()" />
+                    <span class="input-group-btn">
             <button class="btn btn-primary" type="button" ng-click="runPipe()" ng-disabled="in.commands.length == 0 || out.processing">Run</button>
           </span>
+                </div>
+
+                <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
+                    <div class="panel-body">
+                        <table class="table">
+                            <tr ng-repeat="s in suggestions | filter:commands">
+                                <td style="border-top: none;"><a>{{s.name}}</a>
+                                </td>
+                                <td style="border-top: none;">{{s.desc}}</td>
+                                <td style="border-top: none;">{{s.example}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-
-        <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
-          <div class="panel-body">
-            <table class="table">
-              <tr ng-repeat="s in suggestions | filter:commands">
-                <td style="border-top: none;"><a>{{s.name}}</a>
-                </td>
-                <td style="border-top: none;">{{s.desc}}</td>
-                <td style="border-top: none;">{{s.example}}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-      </div>
-
+        <!-- /input-group -->
     </div>
-    <!-- /input-group -->
-  </div>
-  <!-- /.col-lg-6 -->
+    <!-- /.col-lg-6 -->
 </div>
 <div class="row">
-  <br>
+    <br>
 </div>
 <div class="row">
-  <div class="panel panel-default">
-    <ul class="nav nav-pills nav-justified" role="tablist">
-      <li role="presentation" ng-class="{active: selected.tab==0}" ng-click="selected.tab=0">
-        <a>Input</a>
-      </li>
-      <li role="presentation" ng-class="{active: selected.tab==1}" ng-click="selected.tab=1">
-        <a>Output</a>
-      </li>
-    </ul>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-12" ng-show="selected.tab==0">
-          <div class="panel panel-default">
-            <div class="panel-heading clearfix">
-              <div class="btn-group pull-right" role="group">
-                <button type="button" class="btn btn-default" ng-click="in.mode=InputModes.Text" ng-class="{ 'active' : in.mode == InputModes.Text }" ng-disabled="out.processing">Text</button>
-                <button type="button" class="btn btn-default" ng-click="in.mode=InputModes.Account" ng-class="{ 'active' : in.mode == InputModes.Account }" ng-disabled="out.processing">Account</button>
-              </div>
-              <div class="btn-group pull-right col-md-1" role="group">
-                <button type="button" class="btn btn-default" ng-click="clearInput()" ng-if="in.mode==InputModes.Text">Clear</button>
-              </div>
-              <h5 ng-if="in.mode==InputModes.Text">{{ in.text.length | bytes }}</h5>
-              <h5 ng-if="in.mode==InputModes.Account">{{ computeSelectedFilePath() }}</h5>
-            </div>
-            <div ng-switch on="in.mode">
-              <!-- Text input -->
-              <div ng-switch-when="0">
-                <textarea class="form-control myTextArea" rows="10" ng-model="in.text" placeholder="Enter input text here"></textarea>
-              </div>
-              <!-- Account input -->
-              <div ng-switch-when="1">
-
-                <ol class="breadcrumb">
-                  <li ng-repeat="part in breadcrumbPath" ng-click="breadcrumbPathSelected(part)">
-                    <a>{{part.name}}</a>
-                  </li>
-                </ol>
-
-                <!-- Account view-->
-                <table class="table table-hover" ng-if="breadcrumbPath.length==1">
-                  <tr ng-repeat="account in accounts" ng-if="account.provider!='local'" ng-click="accountSelected(account)" ng-class="{ 'active' : account === selected.account }">
-                    <td>
-                      <dl>
-                        <dt>{{account.name}}</dt>
-                        <dd>{{account.provider}}</dd>
-                      </dl>
-                    </td>
-                  </tr>
-                </table>
-
-                <!-- Fileinfo view-->
-                <table class="table table-hover" ng-if="breadcrumbPath.length >1 && in.fileinfos !== undefined">
-                  <thead>
-                    <td>Name</td>
-                    <td>Type</td>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="file in in.fileinfos" ng-if="breadcrumbPath.length>1" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selected.file }">
-                      <td>
-                        <image src="images/folder.png" width="32px" height="32px" ng-if="file.isDir"></image>
-                        <image src="images/file.png" width="32px" height="32px" ng-if="file.isDir==false"></image>
-                        {{file.name}}
-                      </td>
-                      <td>{{file.isDir}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <div ng-if="breadcrumbPath.length >1 && in.fileinfos == undefined" class="jumbotron text-center">
-                  <p>Loading, please wait</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12" ng-show="selected.tab==1">
-
-          <div class="panel panel-default">
-            <div class="panel-heading clearfix">
-              <div class="btn-group pull-right" role="group">
-                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Raw" ng-class="{ 'active' : out.format == OutputFormats.Raw }" ng-disabled="out.processing">Raw</button>
-                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Json" ng-class="{ 'active' : out.format == OutputFormats.Json }" ng-disabled="out.processing">Json</button>
-                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Table" ng-class="{ 'active' : out.format == OutputFormats.Table }" ng-disabled="out.processing">Table</button>
-              </div>
-              <div class="btn-group pull-right col-md-3" role="group">
-                <input type="text" class="form-control" ng-model="searchRows" placeholder="Filter rows" ng-if="out.format == OutputFormats.Table" />
-              </div>
-              <h5>{{out.output.length | bytes}} {{out.executionTime | time }}</h5>
-            </div>
-            <!-- TODO rewrite to use app enums instead of int's-->
-            <div ng-switch on="out.format">
-              <!-- Processing pipe view-->
-              <div ng-switch-when="0" class="jumbotron text-center">
-                <p>Processing data, please wait</p>
-              </div>
-              <!-- Raw output -->
-              <div ng-switch-when="1">
-                <textarea class="form-control myTextArea" rows="10" readonly>{{out.output}}</textarea>
-              </div>
-              <!-- Json output -->
-              <div ng-switch-when="2">
-                <json-formatter ng-show="isJsonOutput() == true" json="out.output" open="1"></json-formatter>
-                <div class="jumbotron text-center" ng-if="isJsonOutput() == false">
-                  <p>The output is not a valid json</p>
-                </div>
-              </div>
-              <!-- Table output -->
-              <div ng-switch-when="3">
-
-                <div class="table-responsive">
-
-                  <table class="table table-condensed table-hover" ng-if="out.format==OutputFormats.Table && isJsonOutput() == true">
-                    <thead>
-                      <tr>
-                        <td ng-repeat="key in keys(out.output[0]) | filter:'!$$'"> {{key}} </td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat-start="item in out.output" ng-init="item.$$expanded=false" ng-click="item.$$expanded=!item.$$expanded" ng-class="{ 'active' : item.$$expanded == true }">
-                        <td ng-repeat="key in keys(item) | filter:'!$$'"> {{ item[key] | limitTo : 50 }} </td>
-                      </tr>
-                      <tr ng-repeat-end="" ng-if="item.$$expanded">
-                        <!-- Need to remove the $$ parameters from the length ? -->
-                        <td colspan="{{keys(out.output[0]).length}}">
-                          <dl class="dl-horizontal">
-                            <div ng-repeat="key in keys(item) | filter:'!$$'">
-                              <dt>{{key}}</dt>
-                              <dd>{{item[key]}}</dd>
+    <div class="panel panel-default">
+        <ul class="nav nav-pills nav-justified" role="tablist">
+            <li role="presentation" ng-class="{active: selected.tab==0}" ng-click="selected.tab=0">
+                <a>Input</a>
+            </li>
+            <li role="presentation" ng-class="{active: selected.tab==1}" ng-click="selected.tab=1">
+                <a>Output</a>
+            </li>
+        </ul>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12" ng-show="selected.tab==0">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="btn-group pull-right" role="group">
+                                <button type="button" class="btn btn-default" ng-click="in.mode=InputModes.Text" ng-class="{ 'active' : in.mode == InputModes.Text }" ng-disabled="out.processing">Text</button>
+                                <button type="button" class="btn btn-default" ng-click="in.mode=InputModes.Account" ng-class="{ 'active' : in.mode == InputModes.Account }" ng-disabled="out.processing">Account</button>
                             </div>
-                          </dl>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                            <div class="btn-group pull-right col-md-1" role="group">
+                                <button type="button" class="btn btn-default" ng-click="clearInput()" ng-if="in.mode==InputModes.Text">Clear</button>
+                            </div>
+                            <div ng-show="in.mode==InputModes.Account" class="btn-group pull-right col-md-3" role="group">
+                                <input type="text" class="form-control" ng-model="searchAccount" placeholder="Filter .." />
+                            </div>
+                            <h5 ng-if="in.mode==InputModes.Text">{{ in.text.length | bytes }}</h5>
+                            <h5 ng-if="in.mode==InputModes.Account">{{ computeSelectedFilePath() }}</h5>
+                        </div>
+                        <div ng-switch on="in.mode">
+                            <!-- Text input -->
+                            <div ng-switch-when="0">
+                                <textarea class="form-control myTextArea" rows="10" ng-model="in.text" placeholder="Enter input text here"></textarea>
+                            </div>
+                            <!-- Account input -->
+                            <div ng-switch-when="1">
+
+                                <ol class="breadcrumb">
+                                    <li ng-repeat="part in breadcrumbPath" ng-click="breadcrumbPathSelected(part)">
+                                        <a>{{part.name}}</a>
+                                    </li>
+                                </ol>
+
+                                <!-- Account view-->
+                                <table class="table table-hover" ng-if="breadcrumbPath.length==1">
+                                    <tr ng-repeat="account in accounts | filter:searchAccount" ng-if="account.provider!='local'" ng-click="accountSelected(account)" ng-class="{ 'active' : account === selected.account }">
+                                        <td>
+                                            <dl>
+                                                <dt>{{account.name}}</dt>
+                                                <dd>{{account.provider}}</dd>
+                                            </dl>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Fileinfo view-->
+                                <table class="table table-hover" ng-if="breadcrumbPath.length >1 && in.fileinfos !== undefined">
+                                    <thead>
+                                        <td>Name</td>
+                                        <td>Type</td>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="file in in.fileinfos | filter:filterAccount" ng-if="breadcrumbPath.length>1" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selected.file }">
+                                            <td>
+                                                <image src="images/folder.png" width="32px" height="32px" ng-if="file.isDir"></image>
+                                                <image src="images/file.png" width="32px" height="32px" ng-if="file.isDir==false"></image>
+                                                {{file.name}}
+                                            </td>
+                                            <td>{{file.isDir}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div ng-if="breadcrumbPath.length >1 && in.fileinfos == undefined" class="jumbotron text-center">
+                                    <p>Loading, please wait</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-show="selected.tab==1">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="btn-group pull-right" role="group">
+                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Raw" ng-class="{ 'active' : out.format == OutputFormats.Raw }" ng-disabled="out.processing">Raw</button>
+                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Json" ng-class="{ 'active' : out.format == OutputFormats.Json }" ng-disabled="out.processing">Json</button>
+                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Table" ng-class="{ 'active' : out.format == OutputFormats.Table }" ng-disabled="out.processing">Table</button>
+                            </div>
+                            <div ng-show="out.format==OutputFormats.Table" class="btn-group pull-right col-md-3" role="group">
+                                <input type="text" class="form-control" ng-model="searchRows" placeholder="Filter rows" />
+                            </div>
+                            <h5>{{out.output.length | bytes}} {{out.executionTime | time }}</h5>
+                        </div>
+                        <!-- TODO rewrite to use app enums instead of int's-->
+                        <div ng-switch on="out.format">
+                            <!-- Processing pipe view-->
+                            <div ng-switch-when="0" class="jumbotron text-center">
+                                <p>Processing data, please wait</p>
+                            </div>
+                            <!-- Raw output -->
+                            <div ng-switch-when="1">
+                                <textarea class="form-control myTextArea" rows="10" readonly>{{out.output}}</textarea>
+                            </div>
+                            <!-- Json output -->
+                            <div ng-switch-when="2">
+                                <json-formatter ng-show="isJsonOutput() == true" json="out.output" open="1"></json-formatter>
+                                <div class="jumbotron text-center" ng-if="isJsonOutput() == false">
+                                    <p>The output is not a valid json</p>
+                                </div>
+                            </div>
+                            <!-- Table output -->
+                            <div ng-switch-when="3">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-condensed table-hover" ng-if="out.format==OutputFormats.Table && isJsonOutput() == true">
+                                        <thead>
+                                            <tr>
+                                                <td ng-repeat="key in keys(out.output[0]) | filter:'!$$'"> {{key}} </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat-start="item in out.output | filter:searchRows" ng-init="item.$$expanded=false" ng-click="item.$$expanded=!item.$$expanded" ng-class="{ 'active' : item.$$expanded == true }">
+                                                <td ng-repeat="key in keys(item) | filter:'!$$'"> {{ item[key] | limitTo : 50 }} </td>
+                                            </tr>
+                                            <tr ng-repeat-end="" ng-if="item.$$expanded">
+                                                <!-- Need to remove the $$ parameters from the length ? -->
+                                                <td colspan="{{keys(out.output[0]).length}}">
+                                                    <dl class="dl-horizontal">
+                                                        <div ng-repeat="key in keys(item) | filter:'!$$'">
+                                                            <dt>{{key}}</dt>
+                                                            <dd>{{item[key]}}</dd>
+                                                        </div>
+                                                    </dl>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="jumbotron text-center" ng-if="isJsonOutput() == false">
+                                    <p>The output is not a valid table</p>
+                                </div>
+
+                            </div>
+
+                            <div ng-switch-default>
+                                Default view should not happen!
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
-
-                <div class="jumbotron text-center" ng-if="isJsonOutput() == false">
-                  <p>The output is not a valid table</p>
-                </div>
-
-              </div>
-
-              <div ng-switch-default>
-                Default view should not happen!
-              </div>
             </div>
-          </div>
-
         </div>
-      </div>
     </div>
-  </div>
 </div>
