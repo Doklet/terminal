@@ -22,9 +22,20 @@ angular.module('terminalApp', [
         redirectTo: '/'
       });
   })
+  .filter('kind', function() {
+    return function(fileinfo) {
+      if (fileinfo === undefined) {
+        return '';
+      } 
+      else if (fileinfo.isDir === true){
+        return 'directory';
+      }
+      return 'file';
+    };
+  })
   .filter('bytes', function() {
     return function(bytes, precision) {
-      if (bytes === undefined || bytes === '' || isNaN(parseFloat(bytes)) || !isFinite(bytes)) {
+      if (bytes === undefined || bytes === '' || bytes === 0 || isNaN(parseFloat(bytes)) || !isFinite(bytes)) {
         return '-';
       }
       if (typeof precision === 'undefined') {

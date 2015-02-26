@@ -135,7 +135,8 @@
                                 <table class="table table-hover" ng-if="breadcrumbPath.length >1 && in.fileinfos !== undefined">
                                     <thead>
                                         <td>Name</td>
-                                        <td>Type</td>
+                                        <td>Modified</td>
+                                        <td>Size</td>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="file in in.fileinfos | filter:searchAccount" ng-if="breadcrumbPath.length>1" ng-click="fileSelected(file)" ng-class="{ 'active' : file === selected.file }">
@@ -144,7 +145,8 @@
                                                 <image src="images/file.png" width="32px" height="32px" ng-if="file.isDir==false"></image>
                                                 {{file.name}}
                                             </td>
-                                            <td>{{file.isDir}}</td>
+                                            <td>{{file.modified}}</td>
+                                            <td>{{file.size | bytes}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
