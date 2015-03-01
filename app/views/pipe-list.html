@@ -1,0 +1,43 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Pipes
+        <span> 
+          <button type="button" class="btn btn-primary pull-right" ng-click="done()">Done</button>
+        </span>
+      </h3>
+      <br>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <table class="table">
+
+        <tr ng-repeat="pipe in pipes">
+          <td>
+            <dl class="dl-horizontal">
+              <dt>Name</dt>
+              <dd>{{pipe.name}}
+                <span class="pull-right">
+                  <button type="button" class="btn btn-default btn-xs btn-danger" ng-click="delete($index)">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                </span>
+              </dd>
+              <dt>Id</dt>
+              <dd>{{pipe.id}}</dd>
+              <dt>Commands</dt>
+              <dd>{{pipe.pipe}}</dd>
+              <dt>Description</dt>
+              <dd>{{pipe.description}}</dd>
+            </dl>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>
