@@ -18,6 +18,10 @@ angular.module('terminalApp', [
         templateUrl: 'views/pipe-new.html',
         controller: 'PipeNewCtrl'
       })
+      .when('/pipe-list', {
+        templateUrl: 'views/pipe-list.html',
+        controller: 'PipeListCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -26,8 +30,7 @@ angular.module('terminalApp', [
     return function(fileinfo) {
       if (fileinfo === undefined) {
         return '';
-      } 
-      else if (fileinfo.isDir === true){
+      } else if (fileinfo.isDir === true) {
         return 'directory';
       }
       return 'file';

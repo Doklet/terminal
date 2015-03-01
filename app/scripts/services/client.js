@@ -32,6 +32,10 @@ angular.module('terminalApp')
       _pipes.push(pipe);
     };
 
+    this.deletePipe = function(index) {
+      _pipes.splice(index, 1);
+    }
+
     this.setAccounts = function(accounts) {
       _accounts = accounts;
     };

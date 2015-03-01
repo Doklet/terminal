@@ -235,6 +235,10 @@ angular.module('terminalApp')
       $location.path('/pipe-new');
     };
 
+    $scope.editPipe = function() {
+      $location.path('/pipe-list');
+    };
+
     $scope.runPipe = function() {
       $scope.info = undefined;
       $scope.error = undefined;

@@ -11,6 +11,9 @@ angular.module('terminalApp')
       return $http.post('/api/pipe', pipe);
     };
 
+    this.deletePipe = function(pipe) {
+      return $http.delete('/api/pipe/' + pipe.id);
+    };
 
     this.runPipe = function(commands, pipeId, text, filePath) {
       var args = '';

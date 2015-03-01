@@ -3,7 +3,7 @@
     </button>
     {{error}}
 </div>
-<div class="alert alert-info alert-dismissible" ng-show="info!=undefined">{{info}}</div>
+<div class="alert alert-info alert-dismissible" ng-show="info!=undmefined">{{info}}</div>
 
 <div class="container">
     <div class="row">
@@ -12,7 +12,8 @@
                 <button type="button" class="btn btn-default active" ng-click="in.commandMode=Modes.CommandLine" ng-class="{ 'active' : in.commandMode == Modes.CommandLine }">Command Line</button>
                 <button type="button" class="btn btn-default" ng-click="in.commandMode=Modes.SavedPipe" ng-class="{ 'active' : in.commandMode == Modes.SavedPipe }">Saved Pipe</button>
             </div>
-            <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save Pipe</button>
+            <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-success pull-right" ng-click="savePipe()">Save</button>
+            <button type="button" ng-show="in.commandMode == Modes.SavedPipe" class="btn btn-success pull-right" ng-click="editPipe()">Edit</button>
         </div>
     </div>
 
