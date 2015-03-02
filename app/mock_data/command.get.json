@@ -1,0 +1,71 @@
+[{
+  "name": "reverse",
+  "description": "Command to reverse a list",
+  "opts": []
+}, {
+  "name": "decrypt",
+  "description": "Command that decrypt a binary",
+  "opts": [{
+    "name": "file",
+    "short": 102,
+    "long": "file",
+    "type": "string",
+    "description": "The file to decrypt"
+  }, {
+    "name": "privkey",
+    "short": 107,
+    "long": "privkey",
+    "type": "string",
+    "description": "The private key to use for the decryption"
+  }, {
+    "name": "pubkey",
+    "short": 112,
+    "long": "pubkey",
+    "type": "string",
+    "description": "The public key to use for the decryption"
+  }]
+}, {
+  "name": "encrypt",
+  "description": "Command that encrypt a binary",
+  "opts": [{
+    "name": "file",
+    "short": 102,
+    "long": "file",
+    "type": "string",
+    "description": "The file to encrypt"
+  }, {
+    "name": "privkey",
+    "short": 107,
+    "long": "privkey",
+    "type": "string",
+    "description": "The private key to use for the encryption"
+  }, {
+    "name": "pubkey",
+    "short": 112,
+    "long": "pubkey",
+    "type": "string",
+    "description": "The public key to use for the encryption"
+  }]
+}, {
+  "name": "tail",
+  "description": "Command to only output the tail of a list or table",
+  "opts": [{
+    "name": "rows",
+    "short": 114,
+    "long": "rows",
+    "type": "string",
+    "description": "Number of rows to include"
+  }, {
+    "name": "blocks",
+    "short": 98,
+    "long": "blocks",
+    "type": "string",
+    "description": "Number of blocks to include of a 512 byte block"
+  }, {
+    "name": "bytes",
+    "short": 99,
+    "long": "bytes",
+    "type": "string",
+    "description": "Number of bytes to include"
+  }]
+}]

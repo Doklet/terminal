@@ -3,6 +3,10 @@
 angular.module('terminalApp')
   .service('PipeService', function PipeService($http) {
 
+    this.getAllCommands = function() {
+      return $http.get('/api/command');
+    };
+
     this.getAllPipes = function() {
       return $http.get('/api/pipe');
     };

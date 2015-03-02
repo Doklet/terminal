@@ -6,6 +6,7 @@ angular.module('terminalApp')
     var _pipes = [];
     var _accounts = [];
     var _sessionId;
+    var _availableCommands = [];
     var _currentCommands;
 
     this.reset = function() {
@@ -34,7 +35,7 @@ angular.module('terminalApp')
 
     this.deletePipe = function(index) {
       _pipes.splice(index, 1);
-    }
+    };
 
     this.setAccounts = function(accounts) {
       _accounts = accounts;
@@ -42,6 +43,14 @@ angular.module('terminalApp')
 
     this.getAccounts = function() {
       return _accounts;
+    };
+
+    this.setAvailableCommands = function(availableCommands) {
+      _availableCommands = availableCommands;
+    };
+    
+    this.getAvailableCommands = function() {
+      return _availableCommands;
     };
 
     this.setCurrentCommands = function(commands) {

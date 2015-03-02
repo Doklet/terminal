@@ -37,47 +37,12 @@ angular.module('terminalApp')
     Client.setSessionId($window.unescape($location.search().token));
     $scope.token = Client.getSessionId();
 
-    PipeService.getAllPipes()
-      .success(function(pipes) {
-        Client.setPipes(pipes);
-        $scope.pipes = Client.getPipes();
-      })
-      .error(function() {
-        $scope.info = undefined;
-        $scope.error = 'Failed to fetch pipes';
-      });
-
-    AccountService.getAll()
-      .success(function(accounts) {
-        Client.setAccounts(accounts);
-        $scope.accounts = Client.getAccounts();
-      })
-      .error(function() {
-        $scope.info = undefined;
-        $scope.error = 'Failed to fetch accounts';
-      });
-
-    // TODO should be fetch from a service
-    $scope.suggestions = [{
-      name: 'split',
-      desc: 'Split a file into chunks',
-      example: 'split --rows',
-    }, {
-      name: 'tokenize',
-      desc: 'Tokenize chunks usually after a split command'
-    }, {
-      name: 'cat',
-      desc: 'Concatenate files'
-    }, {
-      name: 'cpy',
-      desc: 'Copy files'
-    }];
-
     $scope.hideSuggestions = true;
 
     $scope.in = {
       commandMode: $scope.Modes.CommandLine,
       mode: $scope.InputModes.Text,
+      commands: undefined,
       pipe: undefined,
       text: undefined,
       file: undefined,
@@ -104,6 +69,42 @@ angular.module('terminalApp')
       path: undefined
     }];
 
+    $scope.init = function() {
+
+      AccountService.getAll()
+        .success(function(accounts) {
+          Client.setAccounts(accounts);
+          $scope.accounts = Client.getAccounts();
+        })
+        .error(function() {
+          $scope.info = undefined;
+          $scope.error = 'Failed to fetch accounts';
+        });
+
+      PipeService.getAllPipes()
+        .success(function(pipes) {
+          Client.setPipes(pipes);
+          $scope.pipes = Client.getPipes();
+        })
+        .error(function() {
+          $scope.info = undefined;
+          $scope.error = 'Failed to fetch pipes';
+        });
+
+      PipeService.getAllCommands()
+        .success(function(commands) {
+          Client.setAvailableCommands(commands);
+          $scope.availableCommands = Client.getAvailableCommands();
+        })
+        .error(function() {
+          $scope.info = undefined;
+          $scope.error = 'Failed to fetch commands';
+        });
+    };
+
+    // Invoke init to fetch needed data 
+    $scope.init();
+
     $scope.keys = function(obj) {
       return obj ? Object.keys(obj) : [];
     };
@@ -119,6 +120,21 @@ angular.module('terminalApp')
         default:
           $scope.visibleSuggestions = true;
           break;
+      }
+    };
+
+    $scope.commandSelected = function(command) {
+
+      if ($scope.in.commands === undefined || $scope.in.commands.length === 0) {
+        $scope.in.commands = command.name;
+      } else {
+        // Trim the end if the command string
+        //$scope.in.commands = $scope.in.commands.trimRight(command.name);
+        if ($scope.in.commands.length === 0) {
+          $scope.in.commands = command.name;
+        } else {
+          $scope.in.commands += ' | ' + command.name;
+        }
       }
     };
 
@@ -298,3 +314,11 @@ angular.module('terminalApp')
     };
 
   });
+
+String.prototype.trimRight = function(charlist) {
+  if (charlist === undefined) {
+    charlist = '\\s';
+  }
+
+  return this.replace(new RegExp('[' + charlist + ']+$'), '');
+};
