@@ -164,8 +164,8 @@ angular.module('terminalApp')
         $scope.in.fileinfos = undefined;
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo(breadcrumbPath.accountId, breadcrumbPath.path)
-          .success(function(result) {
-            $scope.in.fileinfos = result.files;
+          .success(function(files) {
+            $scope.in.fileinfos = files;
           })
           .error(function() {
             $scope.in.fileinfos = [];
@@ -199,8 +199,8 @@ angular.module('terminalApp')
       if (selectedFile.isDir === true) {
         // Load the fileinfo for the account and path
         AccountService.fetchFileinfo($scope.selected.account.id, selectedFile.path)
-          .success(function(result) {
-            $scope.in.fileinfos = result.files;
+          .success(function(files) {
+            $scope.in.fileinfos = files;
 
             $scope.breadcrumbPath.push({
               name: selectedFile.name,
