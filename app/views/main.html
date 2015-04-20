@@ -101,7 +101,7 @@
                                 <button type="button" class="btn btn-default" ng-click="clearInput()" ng-if="in.mode==InputModes.Text">Clear</button>
                             </div>
                             <div ng-show="in.mode==InputModes.Account" class="btn-group pull-right col-md-3" role="group">
-                                <input type="text" class="form-control" ng-model="searchAccount" placeholder="Filter .." />
+                                <input type="text" class="form-control hidden-xs" ng-model="searchAccount" placeholder="Filter .." />
                             </div>
                             <h5 ng-if="in.mode==InputModes.Text">{{ in.text.length | bytes }}</h5>
                             <h5 ng-if="in.mode==InputModes.Account">{{ computeSelectedFilePath() }}</h5>
@@ -170,7 +170,7 @@
                                 <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Table" ng-class="{ 'active' : out.format == OutputFormats.Table }" ng-disabled="out.processing">Table</button>
                             </div>
                             <div ng-show="out.format==OutputFormats.Table" class="btn-group pull-right col-md-3" role="group">
-                                <input type="text" class="form-control" ng-model="searchRows" placeholder="Filter rows" />
+                                <input type="text" class="form-control hidden-xs" ng-model="searchRows" placeholder="Filter rows" />
                             </div>
                             <h5>{{out.output.length | bytes}} {{out.executionTime | time }}</h5>
                         </div>

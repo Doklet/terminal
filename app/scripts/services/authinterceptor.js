@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('terminalApp')
-  .factory('AuthInterceptor', function($rootScope, $q, $log, $location, Client) {
+  .factory('AuthInterceptor', function($rootScope, $q, $log, $window, $location, Client) {
 
     return {
       request: function(config) {
@@ -16,7 +16,14 @@ angular.module('terminalApp')
       responseError: function(response) {
         if (response.status === 401) {
           // handle the case where the user is not authenticated
-          //$location.path('www.google.com');
+          if ($location.search().authUrl !== undefined) {
+
+            // Fetch the authUrl from the parameters
+            var authUrl = $window.unescape($location.search().authUrl);
+
+            // redirect user to signin form 
+            $window.top.location = authUrl;
+          }
         }
         return $q.reject(response);
       }
