@@ -248,6 +248,10 @@ angular.module('terminalApp')
       return false;
     };
 
+    $scope.help = function() {
+      $location.path('/help');
+    };
+
     $scope.savePipe = function() {
       Client.setCurrentCommands($scope.in.commands);
       $location.path('/pipe-new');

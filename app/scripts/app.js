@@ -22,6 +22,10 @@ angular.module('terminalApp', [
         templateUrl: 'views/pipe-list.html',
         controller: 'PipeListCtrl'
       })
+      .when('/help', {
+        templateUrl: 'views/help.html',
+        controller: 'HelpCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
