@@ -179,8 +179,8 @@
                         <div class="panel-heading clearfix">
                             <div class="btn-group pull-right" role="group">
                                 <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Raw" ng-class="{ 'active' : out.format == OutputFormats.Raw }" ng-disabled="out.processing">Raw</button>
-                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Json" ng-class="{ 'active' : out.format == OutputFormats.Json }" ng-disabled="out.processing">Json</button>
-                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Table" ng-class="{ 'active' : out.format == OutputFormats.Table }" ng-disabled="out.processing">Table</button>
+                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Table" ng-class="{ 'active' : out.format == OutputFormats.Table }" ng-disabled="out.processing">Table</button>                               
+                                <button type="button" class="btn btn-default" ng-click="out.format=OutputFormats.Chart" ng-class="{ 'active' : out.format == OutputFormats.Chart }" ng-disabled="out.processing">Chart</button>
                             </div>
                             <div ng-show="out.format==OutputFormats.Table" class="btn-group pull-right col-md-3" role="group">
                                 <input type="text" class="form-control hidden-xs" ng-model="searchRows" placeholder="Filter rows" />
@@ -209,7 +209,7 @@
 
                                 <div class="table-responsive">
 
-                                    <table class="table table-condensed table-hover" ng-if="out.format==OutputFormats.Table && isJsonOutput() == true">
+                                    <table class="table table-condensed table-hover" ng-if="out.format==OutputFormats.Table && isTableOutput() == true">
                                         <thead>
                                             <tr>
                                                 <td ng-repeat="key in keys(out.output[0]) | filter:'!$$'"> {{key}} </td>
@@ -235,10 +235,18 @@
 
                                 </div>
 
-                                <div class="jumbotron text-center" ng-if="isJsonOutput() == false">
+                                <div class="jumbotron text-center" ng-if="isTableOutput() == false">
                                     <p>The output is not a valid table</p>
                                 </div>
 
+                            </div>
+
+                            <!-- Chart output -->
+                            <div ng-switch-when="4">
+                                <highchart ng-if="isChartOutput() == true" config="out.output"></highchart>
+                                <div ng-if="isChartOutput() == false" class="jumbotron text-center">
+                                    <p>The output is not a valid chart</p>
+                                </div>
                             </div>
 
                             <div ng-switch-default>

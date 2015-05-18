@@ -6,6 +6,7 @@ angular.module('terminalApp', [
     'ngSanitize',
     'ngRoute',
     'jsonFormatter',
+    'highcharts-ng',
     'apiMock'
   ])
   .config(function($routeProvider) {

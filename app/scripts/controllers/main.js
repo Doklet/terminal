@@ -14,7 +14,8 @@ angular.module('terminalApp')
       Processing: 0,
       Raw: 1,
       Json: 2,
-      Table: 3
+      Table: 3,
+      Chart: 4
     };
 
     // The command modes the user can choose from
@@ -240,10 +241,39 @@ angular.module('terminalApp')
     };
 
     $scope.isJsonOutput = function() {
-      // If the output is a array it's invalid
+      // If the output is a string it's valid
+      if ($scope.out.output === undefined) {
+        return false;
+      }
+
+      if (typeof $scope.out.output === 'string' || $scope.out.output instanceof String) {
+        return false;
+      }
+      // otherwise it's a valid json output
+      return true;
+    };
+
+    $scope.isTableOutput = function() {
+      // If the output is a array it's valid
       if ($scope.out.output instanceof Array) {
         return true;
       }
+      // otherwise it's a not a valid table output
+      return false;
+    };
+
+    $scope.isChartOutput = function() {
+
+      // If the output is a array it's ininvalid
+      if ($scope.out.output instanceof Array) {
+        return false;
+      }
+
+      // If the output is json object with a series property it's "likely" a graph
+      if ($scope.out.output !== undefined && $scope.out.output.series !== undefined) {
+        return true;
+      }
+
       // otherwise it's a not a valid json output
       return false;
     };
