@@ -14,7 +14,9 @@ angular.module('terminalApp')
     };
 
     this.setSessionId = function(sessionId) {
-      _sessionId = sessionId;
+        if (sessionId !== undefined) {
+          _sessionId = sessionId;
+        }
     };
 
     this.getSessionId = function() {

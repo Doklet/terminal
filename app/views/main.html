@@ -14,11 +14,11 @@
             </div>
             <div class="btn-group pull-right">
                     <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-success" ng-click="savePipe()">Save</button>
-                    <button type="button" ng-show="in.commandMode == Modes.CommandLine" class="btn btn-default" ng-click="help()">Help</button>
             </div>
             <button type="button" ng-show="in.commandMode == Modes.SavedPipe" class="btn btn-success pull-right" ng-click="editPipe()">Edit</button>
         </div>
     </div>
+
 
     <div class="row">
         <br>
@@ -259,4 +259,12 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="container">
+    <ul class="nav nav-pills">
+        <li role="presentation"><a ng-click="github()">GitHub</a></li>
+        <li role="presentation"><a ng-click="help()">Commands</a></li>
+        <li role="presentation"><a ng-click="examples()">Examples</a></li>
+    </ul>   
 </div>

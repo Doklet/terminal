@@ -27,6 +27,10 @@ angular.module('terminalApp', [
         templateUrl: 'views/help.html',
         controller: 'HelpCtrl'
       })
+      .when('/examples', {
+        templateUrl: 'views/examples.html',
+        controller: 'ExamplesCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

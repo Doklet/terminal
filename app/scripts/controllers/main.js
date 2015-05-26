@@ -34,8 +34,10 @@ angular.module('terminalApp')
     $scope.info = undefined;
     $scope.error = undefined;
 
-    // Init 
-    Client.setSessionId($window.unescape($location.search().token));
+    // Init
+    if ($location.search().token !== undefined) {
+      Client.setSessionId($window.unescape($location.search().token));
+    }
     $scope.token = Client.getSessionId();
 
     $scope.hideSuggestions = true;
@@ -71,6 +73,9 @@ angular.module('terminalApp')
     }];
 
     $scope.init = function() {
+
+      $scope.in.commands = $location.search().commands;
+      $scope.in.text = $location.search().text;
 
       AccountService.getAll()
         .success(function(accounts) {
@@ -278,8 +283,17 @@ angular.module('terminalApp')
       return false;
     };
 
+    $scope.github = function() {
+      $window.top.location = 'https://github.com/Doklet/terminal';
+    };
+
+    // TODO rename to commands
     $scope.help = function() {
       $location.path('/help');
+    };
+
+    $scope.examples = function() {
+      $location.path('/examples');
     };
 
     $scope.savePipe = function() {
