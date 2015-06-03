@@ -1,5 +1,21 @@
 .PHONY: distro
 
+name=terminal
+
+init:
+	bower install
+	npm install
+
+clean:
+	grunt clean
+
+build:
+	grunt build
+
+stage:
+	-rm -rf app/bower_components
+	ln -s $(PWD)/bower_components app/bower_components
+
 distro-clean:
 	rm -rf distro
 
@@ -20,3 +36,8 @@ deploy: distro
 	ls distro/terminal.zip
 	# Copy the distro to production
 	scp distro/terminal.zip root@digitalocean-prod-0:/var/lib/skyraid/packages/terminal.zip
+
+devdeploy: build distro
+	-rm /var/lib/skyraid/packages/$(name).zip
+	-mkdir /var/lib/skyraid/packages
+	cp distro/$(name).zip /var/lib/skyraid/packages/$(name).zip
