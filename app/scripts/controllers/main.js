@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('terminalApp')
-  .controller('MainCtrl', function($scope, $location, $http, $window, $timeout, PipeService, AccountService, Client) {
+  .controller('MainCtrl', function($scope, $log, $location, $http, $window, $timeout,
+    PipeService, AccountService, DocletService, Client) {
 
     // The tab's the user can choose from
     $scope.TabModes = {
@@ -97,6 +98,16 @@ angular.module('terminalApp')
           $scope.error = 'Failed to fetch pipes';
         });
 
+      DocletService.list()
+        .success(function(doclets) {
+          Client.setDoclets(doclets);
+          $scope.doclets = Client.getDoclets();
+        })
+        .error(function() {
+          $scope.info = undefined;
+          $scope.error = 'Failed to fetch doclets';
+        });
+
       PipeService.getAllCommands()
         .success(function(commands) {
           Client.setAvailableCommands(commands);
@@ -127,6 +138,39 @@ angular.module('terminalApp')
           $scope.visibleSuggestions = true;
           break;
       }
+    };
+
+    $scope.sendTo = function(doclet) {
+
+      // Execute the pipe with the provided parameters
+      var cmd = 'brick --name=New --cmds="' + $window.btoa($scope.in.commands) + '" --bricksid=' + doclet.id;
+
+      if ($scope.in.file !== undefined) {
+        cmd += ' --file="' + $scope.selected.account.name + $scope.in.file.path + '"';
+      }
+
+      // Set the type depending on selected output view
+      switch ($scope.out.format) {
+          case $scope.OutputFormats.Table:
+              cmd += ' --table';
+              break;
+          case $scope.OutputFormats.Chart:
+              cmd += ' --chart';
+              break;
+          default:
+            cmd += ' --text';
+      }
+
+      PipeService.runPipe(cmd, undefined, undefined, undefined)
+        .success(function() {
+          var home = $window.unescape($location.search().home);
+          $window.top.location = home + '/' + doclet.id;
+        })
+        .error(function() {
+          $scope.info = undefined;
+          $scope.error = 'Failed to send brick';
+        });
+
     };
 
     $scope.commandSelected = function(command) {

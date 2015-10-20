@@ -53,9 +53,15 @@
             <div ng-show="in.commandMode == Modes.CommandLine">
                 <div class="input-group">
                     <input type="text" class="form-control" ng-keydown="keyDownCommandLine($event)" ng-model="in.commands" placeholder="Enter commands" ng-disabled="out.processing" ng-focus="visibleSuggestions=true" ng-blur="inputBlur()" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button" ng-click="runPipe()" ng-disabled="in.commands.length == 0 || out.processing">Run</button>
-                    </span>
+                      <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">...</button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-header">Send to</li>
+                            <li ng-repeat="doclet in doclets | dashboardFilter">
+                                <a ng-click="sendTo(doclet)">{{doclet.name}}</a>
+                            </li>
+                        </ul>
+                      </div>
                 </div>
 
                 <div class="panel panel-default overlay" ng-show="visibleSuggestions == true">
