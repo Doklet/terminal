@@ -27,15 +27,15 @@ distro: distro-clean
 	# Change the name of the folder to root to match required package structure
 	-mv dist root
 	# zip the dist dir and and place the zip in the distro folder
-	-zip -r ./distro/terminal.zip ./root > /dev/null
+	-zip -r ./distro/$(name).zip ./root > /dev/null
 	# Change the name back to dist
 	-mv root dist
 
 deploy: distro
 	# Ensure the distro exist
-	ls distro/terminal.zip
+	ls distro/$(name).zip
 	# Copy the distro to production
-	scp distro/terminal.zip root@digitalocean-prod-0:/var/lib/skyraid/packages/terminal.zip
+	scp distro/$(name).zip root@digitalocean-prod-0:/var/lib/skyraid/packages/$(name).zip
 
 devdeploy: build distro
 	-rm /var/lib/skyraid/packages/$(name).zip
